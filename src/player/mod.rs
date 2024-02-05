@@ -10,9 +10,6 @@ impl Plugin for PlayerPlugin {
 }
 
 #[derive(Component)]
-pub struct GameCamera;
-
-#[derive(Component)]
 pub struct Player;
 
 #[derive(Component, Debug)]
@@ -26,14 +23,12 @@ pub struct Hp {
 pub struct PlayerBundle {
     hp: Hp,
     sprite: SpriteSheetBundle,
-    _cam: GameCamera,
     _player: Player,
 }
 
 impl Default for PlayerBundle {
     fn default() -> Self {
         PlayerBundle {
-            _cam: GameCamera,
             _player: Player,
             hp: Hp {
                 base: 100,
