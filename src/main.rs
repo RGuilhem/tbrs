@@ -8,7 +8,8 @@ pub mod ui;
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins, TbrsPlugin))
-        .add_systems(Startup,  setup)
+        .init_resource::<Sprites>()
+        .add_systems(Startup, test)
         .add_systems(Update, bevy::window::close_on_esc)
         .run();
 }
@@ -21,11 +22,33 @@ impl Plugin for TbrsPlugin {
     }
 }
 
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(Camera2dBundle::default());
-    
-    commands.spawn(SpriteBundle {
-        texture: asset_server.load("monochrome-transparent_packed.png"),
+#[derive(Resource)]
+pub struct Sprites(Handle<TextureAtlas>);
+
+impl FromWorld for Sprites {
+    fn from_world(world: &mut World) -> Self {
+        let asset_server = world.get_resource_mut::<AssetServer>().unwrap();
+        let texture_handle = asset_server.load("monochrome-transparent_packed.png");
+
+        let atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(16.0, 16.0),
+            49,
+            22,
+            Some(Vec2::new(1.0, 1.0)),
+            None,
+        );
+        let mut texture_atlases = world.get_resource_mut::<Assets<TextureAtlas>>().unwrap();
+        let atlas_handle = texture_atlases.add(atlas);
+
+        Self(atlas_handle)
+    }
+}
+
+fn test(mut commands: Commands, atlas: Res<Sprites>) {
+    commands.spawn(SpriteSheetBundle {
+        sprite: TextureAtlasSprite::new(1),
+        texture_atlas: atlas.0.clone(),
         ..default()
     });
 }
