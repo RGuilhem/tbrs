@@ -14,7 +14,7 @@ impl Plugin for UiPlugin {
 pub struct UiCamera;
 
 fn hp_ui_system(hp: Query<&Hp, With<Player>>) {
-    if let Ok(hp) = hp.get_single() {
+    if let Ok(_hp) = hp.get_single() {
         //println!("hp: {:#?}", hp);
     }
 }
