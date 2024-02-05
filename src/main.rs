@@ -10,7 +10,6 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .init_resource::<Sprites>()
         .add_systems(Startup, setup)
-        .add_systems(Startup, test)
         .add_plugins(TbrsPlugin)
         .add_systems(Update, bevy::window::close_on_esc)
         .run();
@@ -49,12 +48,4 @@ impl FromWorld for Sprites {
 
 fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
-}
-
-fn test(mut commands: Commands, atlas: Res<Sprites>) {
-    commands.spawn(SpriteSheetBundle {
-        sprite: TextureAtlasSprite::new(27),
-        texture_atlas: atlas.0.clone(),
-        ..default()
-    });
 }

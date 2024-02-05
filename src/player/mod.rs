@@ -1,3 +1,4 @@
+use crate::Sprites;
 use bevy::prelude::*;
 
 pub struct PlayerPlugin;
@@ -22,8 +23,8 @@ pub struct Hp {
 #[derive(Bundle)]
 pub struct PlayerBundle {
     hp: Hp,
-    sprite: SpriteSheetBundle,
     _player: Player,
+    sprite: SpriteSheetBundle,
 }
 
 impl Default for PlayerBundle {
@@ -36,15 +37,20 @@ impl Default for PlayerBundle {
                 max: 100,
             },
             sprite: SpriteSheetBundle {
-                ..Default::default()
+                ..default()
             },
         }
     }
 }
 
-fn setup_player(mut commands: Commands) {
+fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
     commands.spawn(PlayerBundle {
-        ..Default::default()
+        sprite: SpriteSheetBundle {
+            sprite: TextureAtlasSprite::new(27),
+            texture_atlas: atlas.0.clone(),
+            ..default()
+        },
+        ..default()
     });
 }
 
