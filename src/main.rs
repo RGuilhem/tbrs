@@ -9,7 +9,14 @@ pub mod ui;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "TBRS".into(),
+                resolution: (1440.0, 1080.0).into(),
+                ..default()
+            }),
+            ..default()
+        }))
         .init_resource::<Sprites>()
         .add_systems(Startup, setup)
         .add_plugins(TbrsPlugin)
@@ -49,13 +56,18 @@ impl FromWorld for Sprites {
 #[derive(Component)]
 pub struct GameCamera;
 
-fn setup(mut commands: Commands) {
+fn setup(mut commands: Commands, window: Query<&Window>) {
+    let window = window.single();
+    let scaling = window.resolution.scale_factor().round() as u32;
     commands.spawn((
         Camera2dBundle {
             camera: Camera {
                 viewport: Some(Viewport {
                     physical_position: UVec2::new(0, 0),
-                    physical_size: UVec2::new(GRID_SIZE * GRID_WIDTH, GRID_SIZE * GRID_HEIGHT),
+                    physical_size: UVec2::new(
+                        GRID_SIZE * GRID_WIDTH * scaling,
+                        GRID_SIZE * GRID_HEIGHT * scaling,
+                    ),
                     ..default()
                 }),
                 ..default()
