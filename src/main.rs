@@ -7,9 +7,11 @@ pub mod ui;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, TbrsPlugin))
+        .add_plugins(DefaultPlugins)
         .init_resource::<Sprites>()
+        .add_systems(Startup, setup)
         .add_systems(Startup, test)
+        .add_plugins(TbrsPlugin)
         .add_systems(Update, bevy::window::close_on_esc)
         .run();
 }
@@ -43,6 +45,10 @@ impl FromWorld for Sprites {
 
         Self(atlas_handle)
     }
+}
+
+fn setup(mut commands: Commands) {
+    commands.spawn(Camera2dBundle::default());
 }
 
 fn test(mut commands: Commands, atlas: Res<Sprites>) {
