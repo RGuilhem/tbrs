@@ -9,14 +9,18 @@ pub mod ui;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                title: "TBRS".into(),
-                resolution: (1440.0, 1080.0).into(),
-                ..default()
-            }),
-            ..default()
-        }))
+        .add_plugins(
+            DefaultPlugins
+                .set(WindowPlugin {
+                    primary_window: Some(Window {
+                        title: "TBRS".into(),
+                        resolution: (1440.0, 1080.0).into(),
+                        ..default()
+                    }),
+                    ..default()
+                })
+                .set(ImagePlugin::default_nearest()),
+        )
         .init_resource::<Sprites>()
         .add_systems(Startup, setup)
         .add_plugins(TbrsPlugin)
