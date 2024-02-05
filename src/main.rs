@@ -21,7 +21,11 @@ impl Plugin for TbrsPlugin {
     }
 }
 
-fn setup(mut commands: Commands) {
+fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2dBundle::default());
-
+    
+    commands.spawn(SpriteBundle {
+        texture: asset_server.load("monochrome-transparent_packed.png"),
+        ..default()
+    });
 }
