@@ -37,7 +37,7 @@ impl FromWorld for Sprites {
             Vec2::new(16.0, 16.0),
             49,
             22,
-            Some(Vec2::new(1.0, 1.0)),
+            None,
             None,
         );
         let mut texture_atlases = world.get_resource_mut::<Assets<TextureAtlas>>().unwrap();
@@ -53,7 +53,7 @@ fn setup(mut commands: Commands) {
 
 fn test(mut commands: Commands, atlas: Res<Sprites>) {
     commands.spawn(SpriteSheetBundle {
-        sprite: TextureAtlasSprite::new(1),
+        sprite: TextureAtlasSprite::new(27),
         texture_atlas: atlas.0.clone(),
         ..default()
     });
