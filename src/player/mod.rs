@@ -36,9 +36,7 @@ impl Default for PlayerBundle {
                 current: 100,
                 max: 100,
             },
-            sprite: SpriteSheetBundle {
-                ..default()
-            },
+            sprite: SpriteSheetBundle { ..default() },
         }
     }
 }
