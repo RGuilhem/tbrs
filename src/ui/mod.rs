@@ -2,6 +2,7 @@ use crate::player::Hp;
 use crate::player::Player;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
+use bevy::render::view::RenderLayers;
 
 pub struct UiPlugin;
 
@@ -11,6 +12,8 @@ impl Plugin for UiPlugin {
             .add_systems(Update, hp_ui_system);
     }
 }
+
+const UI_LAYER: RenderLayers = RenderLayers::layer(10);
 
 #[derive(Component)]
 pub struct UiCamera;
@@ -28,6 +31,7 @@ fn setup_ui(mut commands: Commands) {
             ..default()
         },
         UiCamera,
+        UI_LAYER
     ));
 }
 
