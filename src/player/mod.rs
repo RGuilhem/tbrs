@@ -1,3 +1,4 @@
+use crate::player::movement::MovementBundle;
 use crate::player::movement::{apply_movements, player_movement, Movement};
 use crate::GameCamera;
 use crate::Sprites;
@@ -32,7 +33,7 @@ pub struct Hp {
 pub struct PlayerBundle {
     hp: Hp,
     _player: Player,
-    movement: Movement,
+    movement: MovementBundle,
     sprite: SpriteSheetBundle,
 }
 
@@ -46,7 +47,7 @@ impl Default for PlayerBundle {
                 max: 100,
             },
             sprite: SpriteSheetBundle { ..default() },
-            movement: Movement::default(),
+            movement: MovementBundle::default(),
         }
     }
 }
