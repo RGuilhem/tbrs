@@ -19,6 +19,7 @@ fn main() {
                     primary_window: Some(Window {
                         title: "TBRS".into(),
                         resolution: (1440.0, 1080.0).into(),
+                        resizable: false,
                         ..default()
                     }),
                     ..default()
