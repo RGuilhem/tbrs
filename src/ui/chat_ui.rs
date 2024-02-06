@@ -26,6 +26,7 @@ impl Default for ChatUiBundle {
                     top: Val::Px((GRID_SIZE * GRID_HEIGHT) as f32),
                     left: Val::Px(0.0),
                     border: UiRect::all(Val::Px(2.0)),
+                    //justify_content: JustifyContent::FlexStart,
                     ..default()
                 },
                 background_color: BG_CHAT.into(),

@@ -1,6 +1,8 @@
 use crate::player::{Hp, Player};
 use crate::ui::chat_ui::ChatUiBundle;
+use crate::ui::right_panel_ui::BottomRightPanelBundle;
 use crate::ui::right_panel_ui::RighPanelBundle;
+use crate::ui::right_panel_ui::TopRightPanelBundle;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::view::RenderLayers;
@@ -51,7 +53,12 @@ fn setup_ui(mut commands: Commands) {
         })
         .with_children(|parent| {
             // Right panel
-            parent.spawn(RighPanelBundle::default());
+            parent
+                .spawn(RighPanelBundle::default())
+                .with_children(|parent| {
+                    parent.spawn(TopRightPanelBundle::default());
+                    parent.spawn(BottomRightPanelBundle::default());
+                });
             // Bottom panel
             parent.spawn(ChatUiBundle::default());
         });
