@@ -54,7 +54,7 @@ fn fps_info(diagnostics: Res<DiagnosticsStore>, mut timer: ResMut<DebugTimer>, t
             .get(FrameTimeDiagnosticsPlugin::FPS)
             .and_then(|fps| fps.smoothed())
         {
-            println!("{:?}", value);
+            info!("FPS: {:?}", value);
         }
     }
 }
