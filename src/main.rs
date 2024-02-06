@@ -2,6 +2,8 @@ use crate::game_world::GameMapPlugin;
 use crate::player::PlayerPlugin;
 use crate::ui::UiPlugin;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
+use bevy::diagnostic::DiagnosticsStore;
+use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::*;
 use bevy::render::camera::Viewport;
 
@@ -23,6 +25,7 @@ fn main() {
                 })
                 .set(ImagePlugin::default_nearest()),
         )
+        .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .init_resource::<Sprites>()
         .add_systems(Startup, setup)
         .add_plugins(TbrsPlugin)
@@ -32,11 +35,27 @@ fn main() {
 
 pub struct TbrsPlugin;
 
+#[derive(Resource)]
+pub struct DebugTimer(Timer);
+
 impl Plugin for TbrsPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(GameMapPlugin)
             .add_plugins(PlayerPlugin)
-            .add_plugins(UiPlugin);
+            .add_plugins(UiPlugin)
+            .insert_resource(DebugTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
+            .add_systems(Update, fps_info);
+    }
+}
+
+fn fps_info(diagnostics: Res<DiagnosticsStore>, mut timer: ResMut<DebugTimer>, time: Res<Time>) {
+    if timer.0.tick(time.delta()).just_finished() {
+        if let Some(value) = diagnostics
+            .get(FrameTimeDiagnosticsPlugin::FPS)
+            .and_then(|fps| fps.smoothed())
+        {
+            println!("{:?}", value);
+        }
     }
 }
 
