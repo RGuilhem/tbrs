@@ -12,6 +12,9 @@ pub mod game_world;
 pub mod player;
 pub mod ui;
 
+pub const WIN_HEIGHT: f32 = 1080.0; 
+pub const WIN_WIDTH: f32 = 1920.0; 
+
 fn main() {
     App::new()
         .add_plugins(
@@ -19,7 +22,7 @@ fn main() {
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "TBRS".into(),
-                        resolution: (1440.0, 1080.0).into(),
+                        resolution: (WIN_WIDTH, WIN_HEIGHT).into(),
                         resizable: false,
                         ..default()
                     }),
