@@ -53,7 +53,7 @@ impl Default for TopRightPanelBundle {
                     width: Val::Percent(100.0),
                     ..default()
                 },
-                background_color: Color::GREEN.into(),
+                background_color: Color::NAVY.into(),
                 ..default()
             },
             _top_right_panel: TopRightPanel,
@@ -79,7 +79,7 @@ impl Default for BottomRightPanelBundle {
                     width: Val::Percent(100.0),
                     ..default()
                 },
-                background_color: Color::YELLOW.into(),
+                background_color: Color::DARK_GREEN.into(),
                 ..default()
             },
             _bottom_right_panel: BottomRightPanel,

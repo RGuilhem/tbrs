@@ -52,9 +52,11 @@ impl Default for PlayerBundle {
 }
 
 fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
+    let mut sprite = TextureAtlasSprite::new(27);
+    sprite.color = Color::RED;
     commands.spawn(PlayerBundle {
         sprite: SpriteSheetBundle {
-            sprite: TextureAtlasSprite::new(27),
+            sprite,
             texture_atlas: atlas.0.clone(),
             transform: Transform::from_xyz(0.0, 0.0, 1.0),
             ..default()

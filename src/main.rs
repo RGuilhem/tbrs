@@ -6,14 +6,15 @@ use bevy::diagnostic::DiagnosticsStore;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::*;
 use bevy::render::camera::Viewport;
+use bevy_rand::prelude::*;
 //use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 pub mod game_world;
 pub mod player;
 pub mod ui;
 
-pub const WIN_HEIGHT: f32 = 1080.0; 
-pub const WIN_WIDTH: f32 = 1920.0; 
+pub const WIN_HEIGHT: f32 = 1080.0;
+pub const WIN_WIDTH: f32 = 1920.0;
 
 fn main() {
     App::new()
@@ -30,6 +31,7 @@ fn main() {
                 })
                 .set(ImagePlugin::default_nearest()),
         )
+        .add_plugins(EntropyPlugin::<ChaCha8Rng>::default())
         //.add_plugins(WorldInspectorPlugin::new())
         .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .init_resource::<Sprites>()
@@ -105,7 +107,7 @@ fn setup(mut commands: Commands, window: Query<&Window>) {
             ..default()
         },
         camera_2d: Camera2d {
-            clear_color: ClearColorConfig::Custom(Color::BLACK),
+            clear_color: ClearColorConfig::Custom(Color::rgb(0.12, 0.5, 0.12)),
         },
         //transform: Transform::from_scale(Vec3::new(0.25, 0.25, 1.0)),
         ..default()
