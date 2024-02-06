@@ -23,7 +23,7 @@ impl Default for Movement {
 pub struct SubPos(Vec2);
 
 #[derive(Component)]
-pub struct GridPos(UVec2);
+pub struct GridPos(Vec2);
 
 #[derive(Bundle)]
 pub struct MovementBundle {
@@ -37,7 +37,7 @@ impl Default for MovementBundle {
         MovementBundle {
             movement: Movement::default(),
             sub_pos: SubPos(Vec2::new(0.0, 0.0)),
-            grid_pos: GridPos(UVec2::new(0, 0)),
+            grid_pos: GridPos(Vec2::new(0.0, 0.0)),
         }
     }
 }
@@ -82,10 +82,10 @@ pub fn apply_movements(
         if sub_pos.0.x.abs() > 1.0 || sub_pos.0.y.abs() > 1.0 {
             sub_pos.0.x = 0.0;
             sub_pos.0.y = 0.0;
-            grid_pos.0.x = mag[0].round() as u32;
-            grid_pos.0.y = mag[1].round() as u32;
+            grid_pos.0.x += mag[0].round();
+            grid_pos.0.y += mag[1].round();
         }
-        trans.translation[0] = (grid_pos.0.x as f32 + sub_pos.0.x) * GRID_SIZE as f32;
-        trans.translation[1] = (grid_pos.0.y as f32 + sub_pos.0.y) * GRID_SIZE as f32;
+        trans.translation[0] = (grid_pos.0.x + sub_pos.0.x) * GRID_SIZE as f32;
+        trans.translation[1] = (grid_pos.0.y + sub_pos.0.y) * GRID_SIZE as f32;
     }
 }
