@@ -41,8 +41,7 @@ fn setup_game_map(mut commands: Commands, atlas: Res<Sprites>) {
                         GRID_SIZE as f32 * col as f32,
                         GRID_SIZE as f32 * row as f32,
                         -1.0,
-                    )
-                    .with_scale(Vec3::new(4.0, 4.0, 4.0)),
+                    ),
                     ..default()
                 },
             });

@@ -46,7 +46,6 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
         sprite: SpriteSheetBundle {
             sprite: TextureAtlasSprite::new(27),
             texture_atlas: atlas.0.clone(),
-            transform: Transform::from_scale(Vec3::new(4.0, 4.0, 4.0)),
             ..default()
         },
         ..default()
