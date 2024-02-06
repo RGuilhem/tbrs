@@ -1,5 +1,6 @@
 use crate::Sprites;
 use crate::GRID_HEIGHT;
+use crate::GRID_SIZE;
 use crate::GRID_WIDTH;
 use bevy::prelude::*;
 
@@ -26,7 +27,7 @@ pub struct MapCellBundle {
 
 fn setup_game_map(mut commands: Commands, atlas: Res<Sprites>) {
     for row in -(GRID_HEIGHT as i32 + 1) / 2..(GRID_HEIGHT as i32 + 1) / 2 {
-            println!("{}", row);
+        println!("{}", row);
         for col in -(GRID_WIDTH as i32) / 2..GRID_WIDTH as i32 / 2 + 1 {
             let mut sprite = TextureAtlasSprite::new(3);
             sprite.color = Color::CRIMSON;
@@ -36,8 +37,12 @@ fn setup_game_map(mut commands: Commands, atlas: Res<Sprites>) {
                 sprite: SpriteSheetBundle {
                     sprite,
                     texture_atlas: atlas.0.clone(),
-                    transform: Transform::from_xyz(64.0 * col as f32, 64.0 * row as f32, -1.0)
-                        .with_scale(Vec3::new(4.0, 4.0, 4.0)),
+                    transform: Transform::from_xyz(
+                        GRID_SIZE as f32 * col as f32,
+                        GRID_SIZE as f32 * row as f32,
+                        -1.0,
+                    )
+                    .with_scale(Vec3::new(4.0, 4.0, 4.0)),
                     ..default()
                 },
             });
