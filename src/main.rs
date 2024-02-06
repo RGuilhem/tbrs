@@ -105,7 +105,7 @@ fn setup(mut commands: Commands, window: Query<&Window>) {
             ..default()
         },
         camera_2d: Camera2d {
-            clear_color: ClearColorConfig::Custom(Color::rgb(0.2, 0.2, 0.2)),
+            clear_color: ClearColorConfig::Custom(Color::BLACK),
         },
         //transform: Transform::from_scale(Vec3::new(0.25, 0.25, 1.0)),
         ..default()

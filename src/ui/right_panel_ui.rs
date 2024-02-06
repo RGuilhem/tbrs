@@ -24,7 +24,7 @@ impl Default for RighPanelBundle {
                     border: UiRect::all(Val::Px(2.0)),
                     ..default()
                 },
-                background_color: Color::rgb(0.6, 0.6, 0.6).into(),
+                background_color: Color::DARK_GRAY.into(),
                 border_color: Color::MAROON.into(),
                 ..default()
             },
