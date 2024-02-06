@@ -1,8 +1,7 @@
 use crate::player::movement::MovementBundle;
-use crate::player::movement::{apply_movements, player_movement, Movement};
+use crate::player::movement::{apply_movements, player_movement};
 use crate::GameCamera;
 use crate::Sprites;
-use crate::GRID_SIZE;
 use bevy::prelude::*;
 
 pub mod movement;
@@ -57,7 +56,7 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
         sprite: SpriteSheetBundle {
             sprite: TextureAtlasSprite::new(27),
             texture_atlas: atlas.0.clone(),
-            //transform: Transform::from_xyz(GRID_SIZE as f32 * 5.0, 0.0, 0.0),
+            transform: Transform::from_xyz(0.0, 0.0, 1.0),
             ..default()
         },
         ..default()
@@ -70,6 +69,7 @@ fn camera_follow(
         Query<&mut Transform, With<GameCamera>>,
     )>,
 ) {
+    // TODO: do not use ParamSet: https://johanhelsing.studio/posts/extreme-bevy-2
     let trans = set.p0().get_single().unwrap().translation;
     for mut c_transform in set.p1().iter_mut() {
         c_transform.translation.x = trans.x;
