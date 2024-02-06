@@ -9,7 +9,8 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup_player)
             .add_systems(Update, check_death)
-            .add_systems(Update, camera_follow);
+            .add_systems(Update, camera_follow)
+            .add_systems(Update, player_movement);
     }
 }
 
@@ -54,6 +55,25 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
         },
         ..default()
     });
+}
+
+fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<Player>>) {
+    let mut dir = Vec2::new(0.0, 0.0);
+    if keys.pressed(KeyCode::W) {
+        dir[1] = 1.0;
+    }
+    if keys.pressed(KeyCode::S) {
+        dir[1] = -1.0;
+    }
+    if keys.pressed(KeyCode::D) {
+        dir[0] = 1.0;
+    }
+    if keys.pressed(KeyCode::A) {
+        dir[0] = -1.0;
+    }
+    let mut trans = query.single_mut();
+    trans.translation[0] += dir[0];
+    trans.translation[1] += dir[1];
 }
 
 fn camera_follow(
