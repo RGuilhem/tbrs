@@ -57,7 +57,7 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
         sprite: SpriteSheetBundle {
             sprite: TextureAtlasSprite::new(27),
             texture_atlas: atlas.0.clone(),
-            transform: Transform::from_xyz(GRID_SIZE as f32 * 0.0, 0.0, 0.0),
+            //transform: Transform::from_xyz(GRID_SIZE as f32 * 5.0, 0.0, 0.0),
             ..default()
         },
         ..default()
