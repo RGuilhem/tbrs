@@ -13,7 +13,7 @@ impl Plugin for PlayerPlugin {
         app.add_systems(Startup, setup_player)
             .add_systems(Update, check_death)
             .add_systems(Update, camera_follow)
-            //.add_systems(Update, apply_movements)
+            .add_systems(Update, apply_movements)
             .add_systems(Update, player_movement);
     }
 }
@@ -71,12 +71,9 @@ fn camera_follow(
 ) {
     let mut trans = Transform::default();
     for p_transform in set.p0().iter() {
-        //println!("p => {:#?}", p_transform);
         trans.translation = p_transform.translation;
     }
-
     for mut c_transform in set.p1().iter_mut() {
-        //println!("c => {:#?}", c_transform);
         c_transform.translation = trans.translation;
     }
 }

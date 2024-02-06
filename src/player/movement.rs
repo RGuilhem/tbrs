@@ -1,7 +1,7 @@
 use crate::player::Player;
 use bevy::prelude::*;
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct Movement {
     speed: f32,
     directions: (f32, f32),
