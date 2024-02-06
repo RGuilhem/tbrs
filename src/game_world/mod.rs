@@ -27,7 +27,6 @@ pub struct MapCellBundle {
 
 fn setup_game_map(mut commands: Commands, atlas: Res<Sprites>) {
     for row in -(GRID_HEIGHT as i32 + 1) / 2..(GRID_HEIGHT as i32 + 1) / 2 {
-        println!("{}", row);
         for col in -(GRID_WIDTH as i32) / 2..GRID_WIDTH as i32 / 2 + 1 {
             let mut sprite = TextureAtlasSprite::new(3);
             sprite.color = Color::CRIMSON;
