@@ -29,7 +29,7 @@ fn setup_game_map(mut commands: Commands, atlas: Res<Sprites>) {
             println!("{}", row);
         for col in -(GRID_WIDTH as i32) / 2..GRID_WIDTH as i32 / 2 + 1 {
             let mut sprite = TextureAtlasSprite::new(3);
-            sprite.color = Color::rgb(1.0, 0.0, 0.0);
+            sprite.color = Color::CRIMSON;
             commands.spawn(MapCellBundle {
                 _grid_cell: GridCell,
                 grid_position: GridPosition(Vec2::new(col as f32, row as f32)),
