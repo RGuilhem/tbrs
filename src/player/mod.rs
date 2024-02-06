@@ -70,12 +70,10 @@ fn camera_follow(
         Query<&mut Transform, With<GameCamera>>,
     )>,
 ) {
-    let mut trans = Transform::default();
-    for p_transform in set.p0().iter() {
-        trans.translation = p_transform.translation;
-    }
+    let trans = set.p0().get_single().unwrap().translation;
     for mut c_transform in set.p1().iter_mut() {
-        c_transform.translation = trans.translation;
+        c_transform.translation.x = trans.x;
+        c_transform.translation.y = trans.y;
     }
 }
 
