@@ -86,26 +86,24 @@ pub struct GameCamera;
 fn setup(mut commands: Commands, window: Query<&Window>) {
     let window = window.single();
     let scaling = window.resolution.scale_factor().round() as u32;
-    commands.spawn((
-        Camera2dBundle {
-            camera: Camera {
-                viewport: Some(Viewport {
-                    physical_position: UVec2::new(0, 0),
-                    physical_size: UVec2::new(
-                        GRID_SIZE * GRID_WIDTH * scaling,
-                        GRID_SIZE * GRID_HEIGHT * scaling,
-                    ),
-                    ..default()
-                }),
+    let game_cam = Camera2dBundle {
+        camera: Camera {
+            viewport: Some(Viewport {
+                physical_position: UVec2::new(0, 0),
+                physical_size: UVec2::new(
+                    GRID_SIZE * GRID_WIDTH * scaling as u32,
+                    GRID_SIZE * GRID_HEIGHT * scaling as u32,
+                ),
                 ..default()
-            },
-            camera_2d: Camera2d {
-                clear_color: ClearColorConfig::Custom(Color::rgb(0.2, 0.2, 0.2)),
-            },
-            //transform: Transform::from_scale(Vec3::new(0.25, 0.25, 1.0)),
+            }),
             ..default()
         },
-        GameCamera,
-        UiCameraConfig { show_ui: false },
-    ));
+        camera_2d: Camera2d {
+            clear_color: ClearColorConfig::Custom(Color::rgb(0.2, 0.2, 0.2)),
+        },
+        //transform: Transform::from_scale(Vec3::new(0.25, 0.25, 1.0)),
+        ..default()
+    };
+
+    commands.spawn((game_cam, GameCamera, UiCameraConfig { show_ui: false }));
 }
