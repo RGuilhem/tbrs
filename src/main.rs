@@ -1,9 +1,11 @@
+use crate::game_world::GameMapPlugin;
 use crate::player::PlayerPlugin;
 use crate::ui::UiPlugin;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::camera::Viewport;
 
+pub mod game_world;
 pub mod player;
 pub mod ui;
 
@@ -32,7 +34,9 @@ pub struct TbrsPlugin;
 
 impl Plugin for TbrsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(PlayerPlugin).add_plugins(UiPlugin);
+        app.add_plugins(GameMapPlugin)
+            .add_plugins(PlayerPlugin)
+            .add_plugins(UiPlugin);
     }
 }
 
@@ -79,7 +83,7 @@ fn setup(mut commands: Commands, window: Query<&Window>) {
             camera_2d: Camera2d {
                 clear_color: ClearColorConfig::Custom(Color::rgb(0.2, 0.2, 0.2)),
             },
-            transform: Transform::from_scale(Vec3::new(0.25, 0.25, 1.0)),
+            //transform: Transform::from_scale(Vec3::new(0.25, 0.25, 1.0)),
             ..default()
         },
         GameCamera,
