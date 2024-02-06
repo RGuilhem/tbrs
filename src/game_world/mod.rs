@@ -15,13 +15,13 @@ impl Plugin for GameMapPlugin {
 #[derive(Component)]
 pub struct GridCell;
 
-#[derive(Component)]
-pub struct GridPosition(Vec2);
+//#[derive(Component)]
+//pub struct GridPosition(Vec2);
 
 #[derive(Bundle)]
 pub struct MapCellBundle {
     _grid_cell: GridCell,
-    grid_position: GridPosition,
+    //grid_position: GridPosition,
     sprite: SpriteSheetBundle,
 }
 
@@ -37,7 +37,7 @@ fn setup_game_map(mut commands: Commands, atlas: Res<Sprites>) {
             }
             commands.spawn(MapCellBundle {
                 _grid_cell: GridCell,
-                grid_position: GridPosition(Vec2::new(col as f32, row as f32)),
+                //grid_position: GridPosition(Vec2::new(col as f32, row as f32)),
                 sprite: SpriteSheetBundle {
                     sprite,
                     texture_atlas: atlas.0.clone(),
