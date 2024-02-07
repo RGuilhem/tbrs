@@ -7,11 +7,15 @@ use bevy::prelude::*;
 use bevy_rand::prelude::*;
 use rand_core::RngCore;
 
+use self::hub::setup_hub;
+
+pub mod hub;
+
 pub struct GameMapPlugin;
 
 impl Plugin for GameMapPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_game_map);
+        app.add_systems(Startup, setup_hub);
     }
 }
 
@@ -31,6 +35,7 @@ pub struct MapCellBundle {
     sprite: SpriteSheetBundle,
 }
 
+#[allow(dead_code)] // TODO: remove function after new map creation
 fn setup_game_map(
     mut commands: Commands,
     atlas: Res<Sprites>,
@@ -48,7 +53,7 @@ fn setup_game_map(
                         _grid_cell: GridCell,
                         grid_pos: GridPos(IVec2::new(
                             col as i32 - (GRID_WIDTH / 2) as i32,
-                            row as i32 - (GRID_HEIGHT / 2) as i32
+                            row as i32 - (GRID_HEIGHT / 2) as i32,
                         )),
                         sprite: SpriteSheetBundle {
                             sprite,
