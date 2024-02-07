@@ -1,4 +1,4 @@
-use crate::player::movement::GridPos;
+use crate::movements::GridPos;
 use crate::Sprites;
 use crate::GRID_HEIGHT;
 use crate::GRID_SIZE;

@@ -10,6 +10,7 @@ use bevy_rand::prelude::*;
 //use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 pub mod game_world;
+pub mod movements;
 pub mod player;
 pub mod ui;
 

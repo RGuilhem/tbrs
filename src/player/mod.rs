@@ -1,11 +1,12 @@
-use crate::player::movement::initiate_movements;
-use crate::player::movement::MovementBundle;
-use crate::player::movement::{apply_movements, player_movement};
+use crate::movements::apply_movements;
+use crate::movements::initiate_movements;
+use crate::movements::MovementBundle;
+use crate::player::input::player_movement;
 use crate::GameCamera;
 use crate::Sprites;
 use bevy::prelude::*;
 
-pub mod movement;
+pub mod input;
 
 pub struct PlayerPlugin;
 
