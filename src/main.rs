@@ -15,6 +15,7 @@ pub mod movements;
 pub mod player;
 pub mod ui;
 pub mod sprites;
+pub mod alive;
 
 pub const WIN_HEIGHT: f32 = 1080.0;
 pub const WIN_WIDTH: f32 = 1920.0;

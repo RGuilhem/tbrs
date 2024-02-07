@@ -1,7 +1,6 @@
-use crate::game_world::Collider;
+use crate::alive::AliveBundle;
 use crate::movements::apply_movements;
 use crate::movements::initiate_movements;
-use crate::movements::MovementBundle;
 use crate::player::input::player_movement;
 use crate::GameCamera;
 use crate::Sprites;
@@ -24,35 +23,17 @@ impl Plugin for PlayerPlugin {
 #[derive(Component)]
 pub struct Player;
 
-#[derive(Component, Debug)]
-#[allow(dead_code)] // TODO: remove after used
-pub struct Hp {
-    base: u32,
-    current: u32,
-    max: u32,
-}
-
 #[derive(Bundle)]
 pub struct PlayerBundle {
-    hp: Hp,
-    movement: MovementBundle,
-    sprite: SpriteSheetBundle,
+    alive_bundle: AliveBundle,
     _player: Player,
-    _collider: Collider,
 }
 
 impl Default for PlayerBundle {
     fn default() -> Self {
         PlayerBundle {
-            hp: Hp {
-                base: 100,
-                current: 100,
-                max: 100,
-            },
-            sprite: SpriteSheetBundle { ..default() },
-            movement: MovementBundle::default(),
+            alive_bundle: AliveBundle::default(),
             _player: Player,
-            _collider: Collider,
         }
     }
 }
@@ -61,10 +42,13 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
     let mut sprite = TextureAtlasSprite::new(27);
     sprite.color = Color::RED;
     commands.spawn(PlayerBundle {
-        sprite: SpriteSheetBundle {
-            sprite,
-            texture_atlas: atlas.0.clone(),
-            transform: Transform::from_xyz(0.0, 0.0, 1.0),
+        alive_bundle: AliveBundle {
+            sprite: SpriteSheetBundle {
+                sprite,
+                texture_atlas: atlas.0.clone(),
+                transform: Transform::from_xyz(0.0, 0.0, 1.0),
+                ..default()
+            },
             ..default()
         },
         ..default()

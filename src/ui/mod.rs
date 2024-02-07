@@ -1,4 +1,5 @@
-use crate::player::{Hp, Player};
+use crate::alive::Hp;
+use crate::player::Player;
 use crate::ui::chat_ui::ChatUiBundle;
 use crate::ui::right_panel_ui::BottomRightPanelBundle;
 use crate::ui::right_panel_ui::RighPanelBundle;
