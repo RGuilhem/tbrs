@@ -6,8 +6,8 @@ use bevy::prelude::*;
 
 #[derive(Component, Debug)]
 pub struct Movement {
-    speed: f32,
-    directions: (f32, f32),
+    pub speed: f32,
+    pub directions: Vec2,
 }
 
 const SPEED_REDUCTION: f32 = 35.0;
@@ -16,7 +16,7 @@ impl Default for Movement {
     fn default() -> Self {
         Movement {
             speed: 50.0 / SPEED_REDUCTION,
-            directions: (0.0, 0.0),
+            directions: Vec2::new(0.0, 0.0),
         }
     }
 }
@@ -75,8 +75,8 @@ pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement
         dir.1 = -1.0;
     }
     let mut mov = query.single_mut();
-    mov.directions.0 = dir.0;
-    mov.directions.1 = dir.1;
+    mov.directions.x = dir.0;
+    mov.directions.y = dir.1;
 }
 
 pub fn apply_movements(
@@ -86,22 +86,22 @@ pub fn apply_movements(
 ) {
     for (mut trans, mov, mut sub_pos, mut grid_pos) in query.iter_mut() {
         // initiate a move
-        if (mov.directions.0 != 0.0 || mov.directions.1 != 0.0)
+        if (mov.directions.x != 0.0 || mov.directions.y != 0.0)
             && sub_pos.0.x == 0.0
             && sub_pos.0.y == 0.0
         {
             let mut can_move = true;
             for cell in q.iter() {
-                if cell.x == (mov.directions.0 + grid_pos.0.x).round() as i32
-                    && cell.y == (mov.directions.1 + grid_pos.0.y).round() as i32
+                if cell.x == (mov.directions.x + grid_pos.0.x).round() as i32
+                    && cell.y == (mov.directions.y + grid_pos.0.y).round() as i32
                 {
                     can_move = false;
                     break;
                 }
             }
             if can_move {
-                sub_pos.0.x += time.delta_seconds() * mov.directions.0;
-                sub_pos.0.y += time.delta_seconds() * mov.directions.1;
+                sub_pos.0.x += time.delta_seconds() * mov.directions.x;
+                sub_pos.0.y += time.delta_seconds() * mov.directions.y;
             }
         }
         let mag = Vec2::new(sub_pos.0.x, sub_pos.0.y);

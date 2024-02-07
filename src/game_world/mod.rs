@@ -1,3 +1,4 @@
+use crate::player::movement::GridPos;
 use crate::Sprites;
 use crate::GRID_HEIGHT;
 use crate::GRID_SIZE;
@@ -29,7 +30,7 @@ pub struct Collider;
 #[derive(Bundle)]
 pub struct MapCellBundle {
     _grid_cell: GridCell,
-    //grid_position: GridPosition,
+    //grid_pos: GridPos,
     sprite: SpriteSheetBundle,
 }
 
@@ -51,7 +52,6 @@ fn setup_game_map(
                             x: col as i32 - (GRID_WIDTH / 2) as i32,
                             y: row as i32 - (GRID_HEIGHT / 2) as i32,
                         },
-                        //grid_position: GridPosition(Vec2::new(col as f32, row as f32)),
                         sprite: SpriteSheetBundle {
                             sprite,
                             texture_atlas: atlas.0.clone(),
