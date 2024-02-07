@@ -93,7 +93,7 @@ fn setup(mut commands: Commands, window: Query<&Window>) {
             ..default()
         },
         camera_2d: Camera2d {
-            clear_color: ClearColorConfig::Custom(Color::rgb(0.12, 0.5, 0.12)),
+            clear_color: ClearColorConfig::Custom(Color::BLACK),
         },
         ..default()
     };

@@ -8,7 +8,7 @@ pub struct Movement {
     pub directions: Vec2,
 }
 
-const SPEED_REDUCTION: f32 = 35.0;
+const SPEED_REDUCTION: f32 = 30.0;
 
 impl Default for Movement {
     fn default() -> Self {
