@@ -1,5 +1,6 @@
 use crate::game_world::Collider;
 use crate::movements::MovementBundle;
+use crate::Sprites;
 use bevy::prelude::*;
 
 #[derive(Component, Debug)]
@@ -34,5 +35,27 @@ impl Default for AliveBundle {
             _collider: Collider,
             _alive: Alive,
         }
+    }
+}
+
+impl AliveBundle {
+    pub fn with_sprite(
+        sprite: TextureAtlasSprite,
+        atlas: &Res<Sprites>,
+        transform: Transform,
+    ) -> AliveBundle {
+        AliveBundle {
+            sprite: SpriteSheetBundle {
+                sprite,
+                texture_atlas: atlas.0.clone(),
+                transform,
+                ..default()
+            },
+            ..default()
+        }
+    }
+
+    pub fn set_transform(&mut self, transform: Transform) {
+        self.sprite.transform = transform;
     }
 }

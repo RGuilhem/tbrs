@@ -41,16 +41,9 @@ impl Default for PlayerBundle {
 fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
     let mut sprite = TextureAtlasSprite::new(27);
     sprite.color = Color::RED;
+    let trans = Transform::from_xyz(0.0, 0.0, 1.0);
     commands.spawn(PlayerBundle {
-        alive_bundle: AliveBundle {
-            sprite: SpriteSheetBundle {
-                sprite,
-                texture_atlas: atlas.0.clone(),
-                transform: Transform::from_xyz(0.0, 0.0, 1.0),
-                ..default()
-            },
-            ..default()
-        },
+        alive_bundle: AliveBundle::with_sprite(sprite, &atlas, trans),
         ..default()
     });
 }
