@@ -13,7 +13,6 @@ pub struct PlayerPlugin;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup_player)
-            .add_systems(Update, check_death)
             .add_systems(Update, camera_follow)
             .add_systems(Update, initiate_movements)
             .add_systems(Update, apply_movements)
@@ -25,6 +24,7 @@ impl Plugin for PlayerPlugin {
 pub struct Player;
 
 #[derive(Component, Debug)]
+#[allow(dead_code)] // TODO: remove after used
 pub struct Hp {
     base: u32,
     current: u32,
@@ -74,27 +74,9 @@ fn camera_follow(
         Query<&mut Transform, With<GameCamera>>,
     )>,
 ) {
-    // TODO: do not use ParamSet: https://johanhelsing.studio/posts/extreme-bevy-2
     let trans = set.p0().get_single().unwrap().translation;
     for mut c_transform in set.p1().iter_mut() {
         c_transform.translation.x = trans.x;
         c_transform.translation.y = trans.y;
-    }
-}
-
-fn check_death(mut commands: Commands, q: Query<(Entity, &Hp, Option<&Player>)>) {
-    for (entity, hp, player) in q.iter() {
-        if hp.current <= 0 {
-            // HACK: remove
-            let _ = hp.base;
-            let _ = hp.max;
-            println!("{:?}: died", entity);
-
-            // The player is the one who died
-            if let Some(_player) = player {
-                println!("player died");
-            }
-            commands.entity(entity).despawn();
-        }
     }
 }
