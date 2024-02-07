@@ -1,4 +1,5 @@
 use crate::movements::GridPos;
+use crate::sprites::transform_from_grid;
 use crate::Sprites;
 use crate::GRID_HEIGHT;
 use crate::GRID_SIZE;
@@ -33,6 +34,23 @@ pub struct MapCellBundle {
     _grid_cell: GridCell,
     grid_pos: GridPos,
     sprite: SpriteSheetBundle,
+}
+
+impl MapCellBundle {
+    pub fn new(x: i32, y: i32, s_index: usize, atlas: Res<Sprites>) -> Self {
+        let mut sprite = TextureAtlasSprite::new(s_index);
+        sprite.color = Color::rgb(0.1, 0.75, 0.1);
+        MapCellBundle {
+            _grid_cell: GridCell,
+            grid_pos: GridPos(IVec2::new(x, y)),
+            sprite: SpriteSheetBundle {
+                sprite,
+                texture_atlas: atlas.0.clone(),
+                transform: transform_from_grid(x, y, 0),
+                ..default()
+            },
+        }
+    }
 }
 
 #[allow(dead_code)] // TODO: remove function after new map creation
