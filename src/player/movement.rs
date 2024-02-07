@@ -122,7 +122,7 @@ pub fn apply_movements(
             grid_pos.0.x += mag[0].round() as i32;
             grid_pos.0.y += mag[1].round() as i32;
         }
-        trans.translation[0] = (grid_pos.0.x as f32 + sub_pos.0.x) * GRID_SIZE as f32;
-        trans.translation[1] = (grid_pos.0.y as f32 + sub_pos.0.y) * GRID_SIZE as f32;
+        trans.translation.x = (grid_pos.0.x as f32 + sub_pos.0.x) * GRID_SIZE as f32;
+        trans.translation.y = (grid_pos.0.y as f32 + sub_pos.0.y) * GRID_SIZE as f32;
     }
 }
