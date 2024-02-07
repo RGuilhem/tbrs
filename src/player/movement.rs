@@ -1,3 +1,5 @@
+use crate::game_world::Collider;
+use crate::game_world::GridCell;
 use crate::player::Player;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
@@ -80,6 +82,7 @@ pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement
 pub fn apply_movements(
     time: Res<Time>,
     mut query: Query<(&mut Transform, &Movement, &mut SubPos, &mut GridPos)>,
+    q: Query<&GridCell, With<Collider>>,
 ) {
     for (mut trans, mov, mut sub_pos, mut grid_pos) in query.iter_mut() {
         // initiate a move
@@ -87,8 +90,19 @@ pub fn apply_movements(
             && sub_pos.0.x == 0.0
             && sub_pos.0.y == 0.0
         {
-            sub_pos.0.x += time.delta_seconds() * mov.directions.0;
-            sub_pos.0.y += time.delta_seconds() * mov.directions.1;
+            let mut can_move = true;
+            for cell in q.iter() {
+                if cell.x == (mov.directions.0 + grid_pos.0.x).round() as i32
+                    && cell.y == (mov.directions.1 + grid_pos.0.y).round() as i32
+                {
+                    can_move = false;
+                    break;
+                }
+            }
+            if can_move {
+                sub_pos.0.x += time.delta_seconds() * mov.directions.0;
+                sub_pos.0.y += time.delta_seconds() * mov.directions.1;
+            }
         }
         let mag = Vec2::new(sub_pos.0.x, sub_pos.0.y);
         let mag = mag.normalize_or_zero();
