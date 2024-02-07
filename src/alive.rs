@@ -64,8 +64,4 @@ impl AliveBundle {
             ..default()
         }
     }
-
-    pub fn set_transform(&mut self, transform: Transform) {
-        self.sprite.transform = transform;
-    }
 }
