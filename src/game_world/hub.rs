@@ -64,13 +64,21 @@ pub fn setup_hub(
         Collider,
     ));
 
-    let s_index = sprite_index(2, 0);
-    for y in 1..SIZE_Y - 1 {
-        for x in 1..SIZE_X - 1 {
-            let mut cell = MapCellBundle::new(x - SIZE_X / 2, y - SIZE_Y / 2, s_index, &atlas);
-            cell.sprite.sprite.color = Color::DARK_GRAY;
-            cell.sprite.transform.rotate_z(PI / 2.0 * (rng.next_u32() % 4) as f32);
-            commands.spawn(cell);
+    // GROUND looks like shit
+    for _ in 0..6 {
+        for y in 1..SIZE_Y - 1 {
+            for x in 1..SIZE_X - 1 {
+                if rng.next_u32() % 3 == 0 {
+                    continue;
+                }
+                let s_index = sprite_index(1, 0);
+                let mut cell = MapCellBundle::new(x - SIZE_X / 2, y - SIZE_Y / 2, s_index, &atlas);
+                cell.sprite.sprite.color = Color::DARK_GRAY;
+                cell.sprite
+                    .transform
+                    .rotate_z(PI / 10.0 * (rng.next_u32() % 10) as f32);
+                commands.spawn(cell);
+            }
         }
     }
 }
