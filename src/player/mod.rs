@@ -1,3 +1,4 @@
+use crate::game_world::Collider;
 use crate::movements::apply_movements;
 use crate::movements::initiate_movements;
 use crate::movements::MovementBundle;
@@ -34,15 +35,15 @@ pub struct Hp {
 #[derive(Bundle)]
 pub struct PlayerBundle {
     hp: Hp,
-    _player: Player,
     movement: MovementBundle,
     sprite: SpriteSheetBundle,
+    _player: Player,
+    _collider: Collider,
 }
 
 impl Default for PlayerBundle {
     fn default() -> Self {
         PlayerBundle {
-            _player: Player,
             hp: Hp {
                 base: 100,
                 current: 100,
@@ -50,6 +51,8 @@ impl Default for PlayerBundle {
             },
             sprite: SpriteSheetBundle { ..default() },
             movement: MovementBundle::default(),
+            _player: Player,
+            _collider: Collider,
         }
     }
 }
