@@ -1,0 +1,40 @@
+use crate::alive::AliveBundle;
+use crate::sprites::sprite_index;
+use crate::sprites::transform_from_grid;
+use crate::Sprites;
+use bevy::prelude::*;
+
+pub struct EnemiesPlugin;
+
+impl Plugin for EnemiesPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Startup, setup_enemies);
+    }
+}
+
+fn setup_enemies(mut commands: Commands, atlas: Res<Sprites>) {
+    let sprite = TextureAtlasSprite::new(sprite_index(25, 2));
+    let trans = transform_from_grid(2, 1, 1);
+    commands.spawn(EnemyBundle {
+        alive_bundle: AliveBundle::with_sprite(sprite, &atlas, trans),
+        ..default()
+    });
+}
+
+#[derive(Component)]
+pub struct Enemy;
+
+#[derive(Bundle)]
+pub struct EnemyBundle {
+    pub alive_bundle: AliveBundle,
+    pub _enemy: Enemy,
+}
+
+impl Default for EnemyBundle {
+    fn default() -> Self {
+        EnemyBundle {
+            alive_bundle: AliveBundle::default(),
+            _enemy: Enemy,
+        }
+    }
+}

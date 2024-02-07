@@ -1,6 +1,8 @@
 use crate::game_world::Collider;
+use crate::movements::GridPos;
 use crate::movements::MovementBundle;
 use crate::Sprites;
+use crate::GRID_SIZE;
 use bevy::prelude::*;
 
 #[derive(Component, Debug)]
@@ -43,12 +45,20 @@ impl AliveBundle {
         sprite: TextureAtlasSprite,
         atlas: &Res<Sprites>,
         transform: Transform,
-    ) -> AliveBundle {
+    ) -> Self {
+        let t = transform.translation;
         AliveBundle {
             sprite: SpriteSheetBundle {
                 sprite,
                 texture_atlas: atlas.0.clone(),
                 transform,
+                ..default()
+            },
+            movement: MovementBundle {
+                grid_pos: GridPos(IVec2::new(
+                    t.x as i32 / GRID_SIZE as i32,
+                    t.y as i32 / GRID_SIZE as i32,
+                )),
                 ..default()
             },
             ..default()

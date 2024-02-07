@@ -1,3 +1,4 @@
+use crate::enemies::EnemiesPlugin;
 use crate::game_world::GameMapPlugin;
 use crate::player::PlayerPlugin;
 use crate::sprites::Sprites;
@@ -56,6 +57,7 @@ impl Plugin for TbrsPlugin {
         app.add_plugins(GameMapPlugin)
             .add_plugins(PlayerPlugin)
             .add_plugins(UiPlugin)
+            .add_plugins(EnemiesPlugin)
             .insert_resource(DebugTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
             .add_systems(Update, fps_info);
     }

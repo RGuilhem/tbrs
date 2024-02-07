@@ -27,9 +27,9 @@ pub struct GridPos(pub IVec2);
 
 #[derive(Bundle)]
 pub struct MovementBundle {
-    movement: Movement,
-    sub_pos: SubPos,
-    grid_pos: GridPos,
+    pub movement: Movement,
+    pub sub_pos: SubPos,
+    pub grid_pos: GridPos,
 }
 
 impl Default for MovementBundle {
