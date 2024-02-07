@@ -1,3 +1,4 @@
+use crate::player::movement::initiate_movements;
 use crate::player::movement::MovementBundle;
 use crate::player::movement::{apply_movements, player_movement};
 use crate::GameCamera;
@@ -13,6 +14,7 @@ impl Plugin for PlayerPlugin {
         app.add_systems(Startup, setup_player)
             .add_systems(Update, check_death)
             .add_systems(Update, camera_follow)
+            .add_systems(Update, initiate_movements)
             .add_systems(Update, apply_movements)
             .add_systems(Update, player_movement);
     }
