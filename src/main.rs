@@ -1,6 +1,6 @@
-use crate::sprites::Sprites;
 use crate::game_world::GameMapPlugin;
 use crate::player::PlayerPlugin;
+use crate::sprites::Sprites;
 use crate::ui::UiPlugin;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::diagnostic::DiagnosticsStore;
@@ -10,12 +10,13 @@ use bevy::render::camera::Viewport;
 use bevy_rand::prelude::*;
 //use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
+pub mod alive;
+pub mod enemies;
 pub mod game_world;
 pub mod movements;
 pub mod player;
-pub mod ui;
 pub mod sprites;
-pub mod alive;
+pub mod ui;
 
 pub const WIN_HEIGHT: f32 = 1080.0;
 pub const WIN_WIDTH: f32 = 1920.0;
