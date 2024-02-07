@@ -1,5 +1,4 @@
 use crate::game_world::Collider;
-use crate::game_world::GridCell;
 use crate::player::Player;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
