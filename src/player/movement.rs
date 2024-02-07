@@ -25,7 +25,7 @@ impl Default for Movement {
 pub struct SubPos(Vec2);
 
 #[derive(Component)]
-pub struct GridPos(Vec2);
+pub struct GridPos(pub IVec2);
 
 #[derive(Bundle)]
 pub struct MovementBundle {
@@ -38,8 +38,8 @@ impl Default for MovementBundle {
     fn default() -> Self {
         MovementBundle {
             movement: Movement::default(),
-            sub_pos: SubPos(Vec2::new(0.0, 0.0)),
-            grid_pos: GridPos(Vec2::new(0.0, 0.0)),
+            sub_pos: SubPos(Vec2::ZERO),
+            grid_pos: GridPos(IVec2::ZERO),
         }
     }
 }
@@ -92,8 +92,8 @@ pub fn apply_movements(
         {
             let mut can_move = true;
             for cell in q.iter() {
-                if cell.x == (mov.directions.x + grid_pos.0.x).round() as i32
-                    && cell.y == (mov.directions.y + grid_pos.0.y).round() as i32
+                if cell.x == (mov.directions.x + grid_pos.0.x as f32).round() as i32
+                    && cell.y == (mov.directions.y + grid_pos.0.y as f32).round() as i32
                 {
                     can_move = false;
                     break;
@@ -112,10 +112,10 @@ pub fn apply_movements(
         if sub_pos.0.x.abs() > 1.0 || sub_pos.0.y.abs() > 1.0 {
             sub_pos.0.x = 0.0;
             sub_pos.0.y = 0.0;
-            grid_pos.0.x += mag[0].round();
-            grid_pos.0.y += mag[1].round();
+            grid_pos.0.x += mag[0].round() as i32;
+            grid_pos.0.y += mag[1].round() as i32;
         }
-        trans.translation[0] = (grid_pos.0.x + sub_pos.0.x) * GRID_SIZE as f32;
-        trans.translation[1] = (grid_pos.0.y + sub_pos.0.y) * GRID_SIZE as f32;
+        trans.translation[0] = (grid_pos.0.x as f32 + sub_pos.0.x) * GRID_SIZE as f32;
+        trans.translation[1] = (grid_pos.0.y as f32 + sub_pos.0.y) * GRID_SIZE as f32;
     }
 }
