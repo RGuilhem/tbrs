@@ -14,6 +14,7 @@ use crate::Sprites;
 use bevy::prelude::*;
 
 pub mod input;
+pub mod inventory;
 
 pub struct PlayerPlugin;
 
