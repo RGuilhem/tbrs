@@ -1,10 +1,10 @@
+use crate::alive::spawn_name;
 use crate::alive::AliveBundle;
 use crate::movements::apply_movements;
 use crate::movements::initiate_movements;
 use crate::player::input::player_movement;
 use crate::GameCamera;
 use crate::Sprites;
-use crate::GRID_SIZE;
 use bevy::prelude::*;
 
 pub mod input;
@@ -44,26 +44,15 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
     sprite.color = Color::RED;
     let trans = Transform::from_xyz(0.0, 0.0, 1.0);
     let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
-    alive_bundle.name.0 = "Player".to_string();
+    alive_bundle.name.0 = "John".to_string();
 
-    let style = TextStyle {
-        font_size: 11.0,
-        ..default()
-    };
     commands
         .spawn(PlayerBundle {
             alive_bundle,
             ..default()
         })
         .with_children(|parent| {
-            parent.spawn(Text2dBundle {
-                text: Text {
-                    sections: vec![TextSection::new("Player", style)],
-                    ..default()
-                },
-                transform: Transform::from_xyz(0.0, GRID_SIZE as f32 / 2.0 + 5.0, 0.0),
-                ..default()
-            });
+            spawn_name(parent, "John");
         });
 }
 

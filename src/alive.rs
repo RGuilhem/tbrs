@@ -70,3 +70,18 @@ impl AliveBundle {
         }
     }
 }
+
+pub fn spawn_name(parent: &mut ChildBuilder, name: &str) {
+    let style = TextStyle {
+        font_size: 11.0,
+        ..default()
+    };
+    parent.spawn(Text2dBundle {
+        text: Text {
+            sections: vec![TextSection::new(name, style)],
+            ..default()
+        },
+        transform: Transform::from_xyz(0.0, GRID_SIZE as f32 / 2.0 + 5.0, 0.0),
+        ..default()
+    });
+}
