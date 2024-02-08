@@ -12,7 +12,7 @@ use bevy::prelude::*;
 use bevy::render::camera::Viewport;
 use bevy::window::PrimaryWindow;
 use bevy_rand::prelude::*;
-//use bevy_inspector_egui::quick::WorldInspectorPlugin;
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 pub mod alive;
 pub mod enemies;
@@ -42,7 +42,7 @@ fn main() {
                 .set(ImagePlugin::default_nearest()),
         )
         .add_plugins(EntropyPlugin::<ChaCha8Rng>::default())
-        //.add_plugins(WorldInspectorPlugin::new())
+        .add_plugins(WorldInspectorPlugin::new())
         .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .init_resource::<Sprites>()
         .add_systems(Startup, setup)
