@@ -1,6 +1,7 @@
 use crate::alive::Hp;
 use crate::player::Player;
 use crate::ui::chat_ui::ChatUiBundle;
+use crate::ui::floating_text::handle_floating_damage_system;
 use crate::ui::right_panel_ui::BottomRightPanelBundle;
 use crate::ui::right_panel_ui::RighPanelBundle;
 use crate::ui::right_panel_ui::TopRightPanelBundle;
@@ -9,6 +10,7 @@ use bevy::prelude::*;
 use bevy::render::view::RenderLayers;
 
 pub mod chat_ui;
+pub mod floating_text;
 pub mod right_panel_ui;
 
 pub struct UiPlugin;
@@ -16,7 +18,8 @@ pub struct UiPlugin;
 impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup_ui)
-            .add_systems(Update, hp_ui_system);
+            .add_systems(Update, hp_ui_system)
+            .add_systems(Update, handle_floating_damage_system);
     }
 }
 

@@ -1,6 +1,7 @@
 use crate::alive::Hp;
 use crate::alive::Target;
 use crate::skills::auto_attack::auto_attack_system;
+use crate::ui::floating_text::FloatingDamageBundle;
 use bevy::prelude::*;
 
 pub mod auto_attack;
@@ -41,9 +42,10 @@ fn check_death_system(
     }
 }
 
-fn apply_damage_system(mut commands: Commands, mut q: Query<(Entity, &Damage, &mut Hp)>) {
-    for (id, damage, mut hp) in q.iter_mut() {
+fn apply_damage_system(mut commands: Commands, mut q: Query<(Entity, &Damage, &mut Hp, &Transform)>) {
+    for (id, damage, mut hp, transform) in q.iter_mut() {
         hp.current -= damage.damage;
         commands.entity(id).remove::<Damage>();
+        commands.spawn(FloatingDamageBundle::new(damage, transform));
     }
 }
