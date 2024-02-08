@@ -4,6 +4,7 @@ use crate::movements::initiate_movements;
 use crate::player::input::player_movement;
 use crate::GameCamera;
 use crate::Sprites;
+use crate::GRID_SIZE;
 use bevy::prelude::*;
 
 pub mod input;
@@ -42,10 +43,28 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
     let mut sprite = TextureAtlasSprite::new(27);
     sprite.color = Color::RED;
     let trans = Transform::from_xyz(0.0, 0.0, 1.0);
-    commands.spawn(PlayerBundle {
-        alive_bundle: AliveBundle::with_sprite(sprite, &atlas, trans),
+    let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
+    alive_bundle.name.0 = "Player".to_string();
+
+    let style = TextStyle {
+        font_size: 11.0,
         ..default()
-    });
+    };
+    commands
+        .spawn(PlayerBundle {
+            alive_bundle,
+            ..default()
+        })
+        .with_children(|parent| {
+            parent.spawn(Text2dBundle {
+                text: Text {
+                    sections: vec![TextSection::new("Player", style)],
+                    ..default()
+                },
+                transform: Transform::from_xyz(0.0, GRID_SIZE as f32 / 2.0 + 5.0, 0.0),
+                ..default()
+            });
+        });
 }
 
 fn camera_follow(

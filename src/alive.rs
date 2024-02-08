@@ -15,9 +15,13 @@ pub struct Hp {
 #[derive(Component)]
 pub struct Alive;
 
+#[derive(Component)]
+pub struct Name(pub String);
+
 #[derive(Bundle)]
 pub struct AliveBundle {
     pub hp: Hp,
+    pub name: Name,
     pub movement: MovementBundle,
     pub sprite: SpriteSheetBundle,
     pub _collider: Collider,
@@ -32,6 +36,7 @@ impl Default for AliveBundle {
                 current: 100,
                 max: 100,
             },
+            name: Name("NO_NAME".to_string()),
             sprite: SpriteSheetBundle { ..default() },
             movement: MovementBundle::default(),
             _collider: Collider,
