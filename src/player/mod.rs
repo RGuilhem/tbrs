@@ -8,6 +8,7 @@ use crate::player::input::player_movement;
 use crate::player::input::setup_target_system;
 use crate::player::input::target_border_system;
 use crate::player::input::update_target_system;
+use crate::skills::auto_attack::AttackStyle;
 use crate::GameCamera;
 use crate::Sprites;
 use bevy::prelude::*;
@@ -56,6 +57,7 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
     let trans = Transform::from_xyz(0.0, 0.0, 1.0);
     let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
     alive_bundle.name.0 = "John".to_string();
+    alive_bundle.auto_attack.auto_attack.style = AttackStyle::Range;
 
     commands.spawn(PlayerBundle {
         alive_bundle,

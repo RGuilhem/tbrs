@@ -28,14 +28,17 @@ impl FloatingDamageBundle {
     pub fn new(damage: &Damage, transform: &Transform) -> Self {
         let mut text = Text2dBundle {
             text: Text {
-                sections: vec![TextSection::from(damage.damage.to_string())],
+                sections: vec![TextSection::new(damage.damage.to_string(), TextStyle {
+                    font_size: 20.0,
+                    ..default()
+                })],
                 ..default()
             },
             ..default()
         };
         text.transform.translation.x = transform.translation.x;
         text.transform.translation.y = transform.translation.y + GRID_SIZE as f32 * 0.75;
-        text.transform.translation.z = 0.0;
+        text.transform.translation.z = 2.0;
         FloatingDamageBundle { text, ..default() }
     }
 }
@@ -47,7 +50,7 @@ pub fn handle_floating_damage_system(
 ) {
     for (id, mut trans, mut floating_damage) in q.iter_mut() {
         if floating_damage.timer.tick(time.delta()).just_finished() {
-            commands.entity(id).despawn_recursive();
+            commands.entity(id).despawn();
         } else {
             trans.translation.y += time.delta_seconds() * 15.0;
         }
