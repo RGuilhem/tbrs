@@ -21,7 +21,7 @@ pub struct Name(pub String);
 #[derive(Component)]
 pub struct FloatingName;
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct Target {
     pub entity: Option<Entity>,
     pub pos: Option<GridPos>,

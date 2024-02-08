@@ -17,7 +17,7 @@ fn setup_enemies(mut commands: Commands, atlas: Res<Sprites>) {
     sprite.color = Color::DARK_GREEN;
     let trans = transform_from_grid(2, 1, 1);
     let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
-    alive_bundle.name.0 = "Skeleton".to_string();
+    alive_bundle.name.0 = "Goblin".to_string();
     commands.spawn(EnemyBundle {
         alive_bundle,
         ..default()
@@ -26,7 +26,8 @@ fn setup_enemies(mut commands: Commands, atlas: Res<Sprites>) {
     sprite.color = Color::DARK_GREEN;
     let trans = transform_from_grid(2, 2, 1);
     let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
-    alive_bundle.name.0 = "Skeleton".to_string();
+    alive_bundle.name.0 = "Goblin".to_string();
+    alive_bundle.movement.movement.directions = Vec2::new(-1.0, 0.0);
     commands.spawn(EnemyBundle {
         alive_bundle,
         ..default()

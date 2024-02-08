@@ -1,3 +1,4 @@
+use crate::movements::GridPos;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
 
@@ -24,8 +25,19 @@ impl FromWorld for Sprites {
     }
 }
 
+pub fn grid_from_transform(translation: Vec3) -> GridPos {
+    GridPos(IVec2::new(
+        translation.x as i32 / GRID_SIZE as i32,
+        translation.y as i32 / GRID_SIZE as i32,
+    ))
+}
+
 pub fn transform_from_grid(x: i32, y: i32, z: i32) -> Transform {
-    Transform::from_xyz(GRID_SIZE as f32 * x as f32, GRID_SIZE as f32 * y as f32, z as f32)
+    Transform::from_xyz(
+        GRID_SIZE as f32 * x as f32,
+        GRID_SIZE as f32 * y as f32,
+        z as f32,
+    )
 }
 
 pub fn sprite_index(col: u32, row: u32) -> usize {

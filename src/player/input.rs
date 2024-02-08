@@ -3,6 +3,7 @@ use crate::enemies::Enemy;
 use crate::movements::GridPos;
 use crate::movements::Movement;
 use crate::player::Player;
+use crate::sprites::grid_from_transform;
 use crate::sprites::transform_from_grid;
 use crate::WorldCoords;
 use crate::GRID_SIZE;
@@ -54,6 +55,22 @@ pub fn change_target_system(
         let mut target = p.single_mut();
         for enemy in e.iter() {
             target.entity = Some(enemy);
+        }
+    }
+}
+
+pub fn update_target_system(
+    mut targets: Query<&mut Target>,
+    targets_pos: Query<(Entity, &Transform)>,
+) {
+    for mut target in targets.iter_mut() {
+        if let Some(entity) = target.entity {
+            for (checking, trans) in targets_pos.iter() {
+                if checking == entity {
+                    target.pos = Some(grid_from_transform(trans.translation));
+                }
+            }
+            //info!("entity: {:?}", commands.get_entity(entity).transform);
         }
     }
 }
@@ -113,7 +130,7 @@ pub fn target_border_system(
             if let Some(pos) = &target.pos {
                 transform.translation = transform_from_grid(pos.0.x, pos.0.y, 0).translation;
                 transform.translation.z = 0.1;
-                transform.rotate_z(time.delta_seconds() * PI / 5.0);
+                transform.rotate_z(time.delta_seconds() * PI / 3.0);
             }
         } else {
             *vis = Visibility::Hidden;
