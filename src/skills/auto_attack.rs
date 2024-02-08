@@ -4,6 +4,9 @@ use crate::movements::GridPos;
 use crate::skills::Damage;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
+use bevy_rand::prelude::ChaCha8Rng;
+use bevy_rand::resource::GlobalEntropy;
+use rand_core::RngCore;
 use std::f32::consts::SQRT_2;
 
 #[derive(Component)]
@@ -16,7 +19,8 @@ pub enum AttackStyle {
 #[derive(Component)]
 pub struct AutoAttack {
     pub timer: Timer,
-    pub damage: i32,
+    pub damage_max: i32,
+    pub damage_min: i32,
     pub style: AttackStyle,
 }
 
@@ -30,7 +34,8 @@ impl Default for AutoAttackBundle {
         AutoAttackBundle {
             auto_attack: AutoAttack {
                 timer: Timer::from_seconds(2.0, TimerMode::Repeating),
-                damage: 20,
+                damage_max: 20,
+                damage_min: 1,
                 style: AttackStyle::Melee,
             },
         }
@@ -56,6 +61,7 @@ pub fn auto_attack_system(
     mut q_attacker: Query<(&mut AutoAttack, &Target, &GridPos)>,
     q_defender: Query<Entity, With<Alive>>,
     time: Res<Time>,
+    mut rng: ResMut<GlobalEntropy<ChaCha8Rng>>,
 ) {
     for (mut attack, target, grid_pos) in q_attacker.iter_mut() {
         if attack.timer.tick(time.delta()).just_finished() {
@@ -64,7 +70,9 @@ pub fn auto_attack_system(
                     if id == target_entity && check_range(&attack.style, grid_pos, target.pos) {
                         info!("Can attack");
                         commands.entity(id).insert(Damage {
-                            damage: attack.damage,
+                            damage: attack.damage_min
+                                + ((rng.next_u32() % (attack.damage_max - attack.damage_min) as u32)
+                                    as i32),
                         });
                     }
                 }

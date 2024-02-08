@@ -44,9 +44,9 @@ impl Default for AliveBundle {
     fn default() -> Self {
         AliveBundle {
             hp: Hp {
-                base: 100,
-                current: 100,
-                max: 100,
+                base: 60,
+                current: 60,
+                max: 60,
             },
             name: Name("NO_NAME".to_string()),
             sprite: SpriteSheetBundle { ..default() },
