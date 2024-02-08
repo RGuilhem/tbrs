@@ -1,3 +1,4 @@
+use crate::player::inventory::Inventory;
 use crate::alive::spawn_names_system;
 use crate::alive::AliveBundle;
 use crate::movements::apply_movements;
@@ -40,6 +41,7 @@ pub struct Player;
 #[derive(Bundle)]
 pub struct PlayerBundle {
     alive_bundle: AliveBundle,
+    inventory: Inventory,
     _player: Player,
 }
 
@@ -47,6 +49,7 @@ impl Default for PlayerBundle {
     fn default() -> Self {
         PlayerBundle {
             alive_bundle: AliveBundle::default(),
+            inventory: Inventory::new(),
             _player: Player,
         }
     }

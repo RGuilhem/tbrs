@@ -6,6 +6,12 @@ pub struct Inventory {
     items: Vec<Option<Entity>>,
 }
 
+impl Default for Inventory {
+    fn default() -> Self {
+        Inventory::new()
+    }
+}
+
 impl Inventory {
     pub const CAPACITY: usize = 28;
 
