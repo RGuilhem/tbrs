@@ -7,6 +7,7 @@ use crate::sprites::transform_from_grid;
 use crate::WorldCoords;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
+use bevy::sprite::MaterialMesh2dBundle;
 
 pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement, With<Player>>) {
     let mut dir = (0.0, 0.0);
@@ -77,14 +78,21 @@ pub fn click_target_system(
 #[derive(Component)]
 pub struct TargetBorder;
 
-pub fn setup_target_system(mut commands: Commands) {
+pub fn setup_target_system(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+) {
+    // HACK: Some black magic going on in here
     commands.spawn((
-        SpriteBundle {
-            sprite: Sprite {
-                color: Color::YELLOW,
-                custom_size: Some(Vec2::new(GRID_SIZE as f32, GRID_SIZE as f32)),
-                ..default()
-            },
+        MaterialMesh2dBundle {
+            mesh: meshes
+                .add(Mesh::from(shape::Circle {
+                    radius: GRID_SIZE as f32 / 2.0,
+                    vertices: 4,
+                }))
+                .into(),
+            material: materials.add(ColorMaterial::from(Color::rgb(0.8, 0.8, 0.1))),
             visibility: Visibility::Hidden,
             ..default()
         },
