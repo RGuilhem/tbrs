@@ -24,7 +24,7 @@ pub struct FloatingName;
 #[derive(Component, Debug)]
 pub struct Target {
     pub entity: Option<Entity>,
-    pub pos: Option<GridPos>,
+    pub pos: Option<Vec2>,
 }
 
 #[derive(Bundle)]

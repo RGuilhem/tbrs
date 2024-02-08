@@ -3,8 +3,6 @@ use crate::enemies::Enemy;
 use crate::movements::GridPos;
 use crate::movements::Movement;
 use crate::player::Player;
-use crate::sprites::grid_from_transform;
-use crate::sprites::transform_from_grid;
 use crate::WorldCoords;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
@@ -61,13 +59,13 @@ pub fn change_target_system(
 
 pub fn update_target_system(
     mut targets: Query<&mut Target>,
-    targets_pos: Query<(Entity, &Transform)>,
+    targets_pos: Query<(Entity, &Transform), Changed<Transform>>,
 ) {
     for mut target in targets.iter_mut() {
         if let Some(entity) = target.entity {
             for (checking, trans) in targets_pos.iter() {
                 if checking == entity {
-                    target.pos = Some(grid_from_transform(trans.translation));
+                    target.pos = Some(Vec2::new(trans.translation.x, trans.translation.y));
                 }
             }
             //info!("entity: {:?}", commands.get_entity(entity).transform);
@@ -86,7 +84,7 @@ pub fn click_target_system(
         for (enemy, pos) in e.iter() {
             if pos.0.x == mouse_pos.0.x && pos.0.y == mouse_pos.0.y {
                 target.entity = Some(enemy);
-                target.pos = Some(pos.clone());
+                target.pos = Some(Vec2::new(pos.0.x as f32, pos.0.y as f32));
                 break;
             }
         }
@@ -128,7 +126,8 @@ pub fn target_border_system(
         if let Some(_) = target.entity {
             *vis = Visibility::Visible;
             if let Some(pos) = &target.pos {
-                transform.translation = transform_from_grid(pos.0.x, pos.0.y, 0).translation;
+                transform.translation.x = pos.x;
+                transform.translation.y = pos.y;
                 transform.translation.z = 0.1;
                 transform.rotate_z(time.delta_seconds() * PI / 3.0);
             }
