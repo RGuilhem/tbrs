@@ -3,7 +3,9 @@ use crate::enemies::Enemy;
 use crate::movements::GridPos;
 use crate::movements::Movement;
 use crate::player::Player;
+use crate::sprites::transform_from_grid;
 use crate::WorldCoords;
+use crate::GRID_SIZE;
 use bevy::prelude::*;
 
 pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement, With<Player>>) {
@@ -68,6 +70,41 @@ pub fn click_target_system(
                 target.pos = Some(pos.clone());
                 break;
             }
+        }
+    }
+}
+
+#[derive(Component)]
+pub struct TargetBorder;
+
+pub fn setup_target_system(mut commands: Commands) {
+    commands.spawn((
+        SpriteBundle {
+            sprite: Sprite {
+                color: Color::YELLOW,
+                custom_size: Some(Vec2::new(GRID_SIZE as f32, GRID_SIZE as f32)),
+                ..default()
+            },
+            visibility: Visibility::Hidden,
+            ..default()
+        },
+        TargetBorder,
+    ));
+}
+
+pub fn target_border_system(
+    target_query: Query<&Target, With<Player>>,
+    mut trans: Query<(&mut Transform, &mut Visibility), With<TargetBorder>>,
+) {
+    let target = target_query.single();
+    for (mut transform, mut vis) in trans.iter_mut() {
+        if let Some(_) = target.entity {
+            *vis = Visibility::Visible;
+            if let Some(pos) = &target.pos {
+                transform.translation = transform_from_grid(pos.0.x, pos.0.y, 0).translation;
+            }
+        } else {
+            *vis = Visibility::Hidden;
         }
     }
 }

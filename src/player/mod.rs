@@ -5,6 +5,8 @@ use crate::movements::initiate_movements;
 use crate::player::input::change_target_system;
 use crate::player::input::click_target_system;
 use crate::player::input::player_movement;
+use crate::player::input::setup_target_system;
+use crate::player::input::target_border_system;
 use crate::GameCamera;
 use crate::Sprites;
 use bevy::prelude::*;
@@ -22,6 +24,8 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, player_movement)
             .add_systems(Update, spawn_names_system)
             .add_systems(Update, change_target_system)
+            .add_systems(Startup, setup_target_system)
+            .add_systems(Update, target_border_system)
             .add_systems(Update, click_target_system);
     }
 }

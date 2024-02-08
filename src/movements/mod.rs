@@ -14,7 +14,7 @@ impl Default for Movement {
     fn default() -> Self {
         Movement {
             speed: 50.0 / SPEED_REDUCTION,
-            directions: Vec2::new(0.0, 0.0),
+            directions: Vec2::ZERO,
         }
     }
 }

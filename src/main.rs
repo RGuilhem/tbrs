@@ -114,7 +114,7 @@ fn setup(mut commands: Commands, window: Query<&Window>) {
     let game_cam = Camera2dBundle {
         camera: Camera {
             viewport: Some(Viewport {
-                physical_position: UVec2::new(0, 0),
+                physical_position: UVec2::ZERO,
                 physical_size: UVec2::new(
                     GRID_SIZE * GRID_WIDTH * scaling as u32,
                     GRID_SIZE * GRID_HEIGHT * scaling as u32,
