@@ -67,9 +67,11 @@ pub fn update_target_system(
             for (checking, trans) in targets_pos.iter() {
                 if checking == entity {
                     target.pos = Some(Vec2::new(trans.translation.x, trans.translation.y));
+                    return;
                 }
             }
-            //info!("entity: {:?}", commands.get_entity(entity).transform);
+            //target.entity = None;
+            //target.pos = None;
         }
     }
 }
@@ -84,6 +86,7 @@ pub fn click_target_system(
         let mut target = p.single_mut();
         for (enemy, pos) in e.iter() {
             if pos.0.x == mouse_pos.0.x && pos.0.y == mouse_pos.0.y {
+                info!("click target");
                 target.entity = Some(enemy);
                 target.pos = Some(Vec2::new(pos.0.x as f32, pos.0.y as f32));
                 break;

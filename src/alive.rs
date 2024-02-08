@@ -1,15 +1,16 @@
 use crate::game_world::Collider;
 use crate::movements::GridPos;
 use crate::movements::MovementBundle;
+use crate::skills::auto_attack::AutoAttackBundle;
 use crate::Sprites;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
 
 #[derive(Component, Debug)]
 pub struct Hp {
-    pub base: u32,
-    pub current: u32,
-    pub max: u32,
+    pub base: i32,
+    pub current: i32,
+    pub max: i32,
 }
 
 #[derive(Component)]
@@ -33,6 +34,7 @@ pub struct AliveBundle {
     pub name: Name,
     pub movement: MovementBundle,
     pub sprite: SpriteSheetBundle,
+    pub auto_attack: AutoAttackBundle,
     pub target: Target,
     pub _collider: Collider,
     pub _alive: Alive,
@@ -48,6 +50,7 @@ impl Default for AliveBundle {
             },
             name: Name("NO_NAME".to_string()),
             sprite: SpriteSheetBundle { ..default() },
+            auto_attack: AutoAttackBundle::default(),
             movement: MovementBundle::default(),
             target: Target {
                 entity: None,

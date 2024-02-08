@@ -1,6 +1,7 @@
 use crate::enemies::EnemiesPlugin;
 use crate::game_world::GameMapPlugin;
 use crate::player::PlayerPlugin;
+use crate::skills::SkillsPlugin;
 use crate::sprites::Sprites;
 use crate::ui::UiPlugin;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
@@ -17,6 +18,7 @@ pub mod enemies;
 pub mod game_world;
 pub mod movements;
 pub mod player;
+pub mod skills;
 pub mod sprites;
 pub mod ui;
 
@@ -62,6 +64,7 @@ impl Plugin for TbrsPlugin {
             .add_plugins(PlayerPlugin)
             .add_plugins(UiPlugin)
             .add_plugins(EnemiesPlugin)
+            .add_plugins(SkillsPlugin)
             .init_resource::<WorldCoords>()
             .add_systems(Update, cursor_world_pos_system)
             .insert_resource(DebugTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
