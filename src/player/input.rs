@@ -8,6 +8,7 @@ use crate::WorldCoords;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
 use bevy::sprite::MaterialMesh2dBundle;
+use std::f32::consts::PI;
 
 pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement, With<Player>>) {
     let mut dir = (0.0, 0.0);
@@ -92,7 +93,7 @@ pub fn setup_target_system(
                     vertices: 4,
                 }))
                 .into(),
-            material: materials.add(ColorMaterial::from(Color::rgb(0.8, 0.8, 0.1))),
+            material: materials.add(ColorMaterial::from(Color::rgba(1.0, 1.0, 0.1, 0.3))),
             visibility: Visibility::Hidden,
             ..default()
         },
@@ -103,6 +104,7 @@ pub fn setup_target_system(
 pub fn target_border_system(
     target_query: Query<&Target, With<Player>>,
     mut trans: Query<(&mut Transform, &mut Visibility), With<TargetBorder>>,
+    time: Res<Time>,
 ) {
     let target = target_query.single();
     for (mut transform, mut vis) in trans.iter_mut() {
@@ -110,6 +112,8 @@ pub fn target_border_system(
             *vis = Visibility::Visible;
             if let Some(pos) = &target.pos {
                 transform.translation = transform_from_grid(pos.0.x, pos.0.y, 0).translation;
+                transform.translation.z = 0.1;
+                transform.rotate_z(time.delta_seconds() * PI / 5.0);
             }
         } else {
             *vis = Visibility::Hidden;
