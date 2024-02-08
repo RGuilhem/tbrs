@@ -1,7 +1,9 @@
 use crate::alive::Target;
 use crate::enemies::Enemy;
+use crate::movements::GridPos;
 use crate::movements::Movement;
 use crate::player::Player;
+use crate::WorldCoords;
 use bevy::prelude::*;
 
 pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement, With<Player>>) {
@@ -48,6 +50,23 @@ pub fn change_target_system(
         let mut target = p.single_mut();
         for enemy in e.iter() {
             target.0 = Some(enemy);
+        }
+    }
+}
+
+pub fn click_target_system(
+    mouse: Res<Input<MouseButton>>,
+    mouse_pos: Res<WorldCoords>,
+    mut p: Query<&mut Target, With<Player>>,
+    e: Query<(Entity, &GridPos), (With<Enemy>, Without<Player>)>,
+) {
+    if mouse.just_pressed(MouseButton::Left) {
+        let mut target = p.single_mut();
+        for (enemy, pos) in e.iter() {
+            if pos.0.x == mouse_pos.0.x && pos.0.y == mouse_pos.0.y {
+                target.0 = Some(enemy);
+                break;
+            }
         }
     }
 }

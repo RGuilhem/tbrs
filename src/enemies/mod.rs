@@ -21,6 +21,14 @@ fn setup_enemies(mut commands: Commands, atlas: Res<Sprites>) {
         alive_bundle,
         ..default()
     });
+    let sprite = TextureAtlasSprite::new(sprite_index(25, 2));
+    let trans = transform_from_grid(2, 2, 1);
+    let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
+    alive_bundle.name.0 = "Skeleton".to_string();
+    commands.spawn(EnemyBundle {
+        alive_bundle,
+        ..default()
+    });
 }
 
 #[derive(Component)]

@@ -8,6 +8,7 @@ use bevy::diagnostic::DiagnosticsStore;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::*;
 use bevy::render::camera::Viewport;
+use bevy::window::PrimaryWindow;
 use bevy_rand::prelude::*;
 //use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
@@ -49,6 +50,9 @@ fn main() {
 
 pub struct TbrsPlugin;
 
+#[derive(Resource, Default)]
+pub struct WorldCoords(IVec2);
+
 #[derive(Resource)]
 pub struct DebugTimer(Timer);
 
@@ -58,8 +62,31 @@ impl Plugin for TbrsPlugin {
             .add_plugins(PlayerPlugin)
             .add_plugins(UiPlugin)
             .add_plugins(EnemiesPlugin)
+            .init_resource::<WorldCoords>()
+            .add_systems(Update, cursor_world_pos_system)
             .insert_resource(DebugTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
             .add_systems(Update, fps_info);
+    }
+}
+
+fn cursor_world_pos_system(
+    mut mycoords: ResMut<WorldCoords>,
+    // query to get the window (so we can read the current cursor position)
+    q_window: Query<&Window, With<PrimaryWindow>>,
+    // query to get camera transform
+    q_camera: Query<(&Camera, &GlobalTransform), With<GameCamera>>,
+) {
+    let (camera, camera_transform) = q_camera.single();
+
+    let window = q_window.single();
+
+    if let Some(world_position) = window
+        .cursor_position()
+        .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
+        .map(|ray| ray.origin.truncate())
+    {
+        mycoords.0.x = (world_position.x / 64.0).round() as i32;
+        mycoords.0.y = (world_position.y / 64.0).round() as i32;
     }
 }
 

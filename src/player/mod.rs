@@ -3,6 +3,7 @@ use crate::alive::AliveBundle;
 use crate::movements::apply_movements;
 use crate::movements::initiate_movements;
 use crate::player::input::change_target_system;
+use crate::player::input::click_target_system;
 use crate::player::input::player_movement;
 use crate::GameCamera;
 use crate::Sprites;
@@ -20,7 +21,8 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, apply_movements)
             .add_systems(Update, player_movement)
             .add_systems(Update, spawn_names_system)
-            .add_systems(Update, change_target_system);
+            .add_systems(Update, change_target_system)
+            .add_systems(Update, click_target_system);
     }
 }
 
