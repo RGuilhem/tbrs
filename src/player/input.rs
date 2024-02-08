@@ -47,12 +47,13 @@ pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement
 pub fn change_target_system(
     keys: Res<Input<KeyCode>>,
     mut p: Query<&mut Target, With<Player>>,
-    e: Query<Entity, (With<Enemy>, Without<Player>)>,
+    e: Query<(Entity, &Transform), (With<Enemy>, Without<Player>)>,
 ) {
     if keys.just_pressed(KeyCode::Tab) {
         let mut target = p.single_mut();
-        for enemy in e.iter() {
+        for (enemy, trans) in e.iter() {
             target.entity = Some(enemy);
+            target.pos = Some(Vec2::new(trans.translation.x, trans.translation.y));
         }
     }
 }
@@ -116,6 +117,7 @@ pub fn setup_target_system(
     ));
 }
 
+// TODO: fix flicker on quick target change
 pub fn target_border_system(
     target_query: Query<&Target, With<Player>>,
     mut trans: Query<(&mut Transform, &mut Visibility), With<TargetBorder>>,
