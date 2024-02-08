@@ -18,6 +18,9 @@ pub struct Alive;
 #[derive(Component)]
 pub struct Name(pub String);
 
+#[derive(Component)]
+pub struct FloatingName;
+
 #[derive(Bundle)]
 pub struct AliveBundle {
     pub hp: Hp,
@@ -71,17 +74,31 @@ impl AliveBundle {
     }
 }
 
-pub fn spawn_name(parent: &mut ChildBuilder, name: &str) {
-    let style = TextStyle {
-        font_size: 11.0,
-        ..default()
-    };
-    parent.spawn(Text2dBundle {
-        text: Text {
-            sections: vec![TextSection::new(name, style)],
+pub fn spawn_names_system(
+    mut commands: Commands,
+    q: Query<(Entity, &Name), Without<FloatingName>>,
+) {
+    for (entity, name) in q.iter() {
+        let style = TextStyle {
+            font_size: 11.0,
             ..default()
-        },
-        transform: Transform::from_xyz(0.0, GRID_SIZE as f32 / 2.0 + 5.0, 0.0),
-        ..default()
-    });
+        };
+        let text = &name.0;
+        info!("floating name: {:?}", text);
+        let id = commands
+            .spawn((
+                Text2dBundle {
+                    text: Text {
+                        sections: vec![TextSection::new(text, style)],
+                        ..default()
+                    },
+                    transform: Transform::from_xyz(0.0, GRID_SIZE as f32 / 2.0 + 5.0, 0.0),
+                    ..default()
+                },
+                FloatingName,
+            ))
+            .id();
+        commands.entity(entity).insert(FloatingName);
+        commands.entity(entity).add_child(id);
+    }
 }

@@ -1,4 +1,4 @@
-use crate::alive::spawn_name;
+use crate::alive::spawn_names_system;
 use crate::alive::AliveBundle;
 use crate::movements::apply_movements;
 use crate::movements::initiate_movements;
@@ -17,7 +17,8 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, camera_follow)
             .add_systems(Update, initiate_movements)
             .add_systems(Update, apply_movements)
-            .add_systems(Update, player_movement);
+            .add_systems(Update, player_movement)
+            .add_systems(Update, spawn_names_system);
     }
 }
 
@@ -46,14 +47,10 @@ fn setup_player(mut commands: Commands, atlas: Res<Sprites>) {
     let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
     alive_bundle.name.0 = "John".to_string();
 
-    commands
-        .spawn(PlayerBundle {
-            alive_bundle,
-            ..default()
-        })
-        .with_children(|parent| {
-            spawn_name(parent, "John");
-        });
+    commands.spawn(PlayerBundle {
+        alive_bundle,
+        ..default()
+    });
 }
 
 fn camera_follow(
