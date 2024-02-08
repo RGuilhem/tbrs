@@ -1,3 +1,5 @@
+use crate::alive::Target;
+use crate::enemies::Enemy;
 use crate::movements::Movement;
 use crate::player::Player;
 use bevy::prelude::*;
@@ -35,4 +37,17 @@ pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement
     let mut mov = query.single_mut();
     mov.directions.x = dir.0;
     mov.directions.y = dir.1;
+}
+
+pub fn change_target_system(
+    keys: Res<Input<KeyCode>>,
+    mut p: Query<&mut Target, With<Player>>,
+    e: Query<Entity, (With<Enemy>, Without<Player>)>,
+) {
+    if keys.just_pressed(KeyCode::Tab) {
+        let mut target = p.single_mut();
+        for enemy in e.iter() {
+            target.0 = Some(enemy);
+        }
+    }
 }
