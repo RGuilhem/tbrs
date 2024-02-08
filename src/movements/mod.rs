@@ -22,7 +22,7 @@ impl Default for Movement {
 #[derive(Component)]
 pub struct SubPos(Vec2);
 
-#[derive(Component)]
+#[derive(Component, Clone)]
 pub struct GridPos(pub IVec2);
 
 #[derive(Bundle)]

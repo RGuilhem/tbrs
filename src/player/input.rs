@@ -49,7 +49,7 @@ pub fn change_target_system(
     if keys.just_pressed(KeyCode::Tab) {
         let mut target = p.single_mut();
         for enemy in e.iter() {
-            target.0 = Some(enemy);
+            target.entity = Some(enemy);
         }
     }
 }
@@ -64,7 +64,8 @@ pub fn click_target_system(
         let mut target = p.single_mut();
         for (enemy, pos) in e.iter() {
             if pos.0.x == mouse_pos.0.x && pos.0.y == mouse_pos.0.y {
-                target.0 = Some(enemy);
+                target.entity = Some(enemy);
+                target.pos = Some(pos.clone());
                 break;
             }
         }

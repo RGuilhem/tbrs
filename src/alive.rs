@@ -22,7 +22,10 @@ pub struct Name(pub String);
 pub struct FloatingName;
 
 #[derive(Component)]
-pub struct Target(pub Option<Entity>);
+pub struct Target {
+    pub entity: Option<Entity>,
+    pub pos: Option<GridPos>,
+}
 
 #[derive(Bundle)]
 pub struct AliveBundle {
@@ -46,7 +49,10 @@ impl Default for AliveBundle {
             name: Name("NO_NAME".to_string()),
             sprite: SpriteSheetBundle { ..default() },
             movement: MovementBundle::default(),
-            target: Target(None),
+            target: Target {
+                entity: None,
+                pos: None,
+            },
             _collider: Collider,
             _alive: Alive,
         }
