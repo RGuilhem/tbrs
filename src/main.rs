@@ -5,6 +5,7 @@ use crate::skills::SkillsPlugin;
 use crate::sprites::Sprites;
 use crate::ui::UiPlugin;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
+use bevy::core_pipeline::tonemapping::Tonemapping;
 use bevy::diagnostic::DiagnosticsStore;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::*;
@@ -129,6 +130,7 @@ fn setup(mut commands: Commands, window: Query<&Window>) {
         camera_2d: Camera2d {
             clear_color: ClearColorConfig::Custom(Color::BLACK),
         },
+        tonemapping: Tonemapping::AcesFitted,
         ..default()
     };
 
