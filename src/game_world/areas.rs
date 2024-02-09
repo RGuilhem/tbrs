@@ -12,8 +12,14 @@ pub struct AreaCell {
 }
 
 pub struct Area {
-    size: Vec2,
+    size: UVec2,
     cells: Vec<Vec<AreaCell>>,
+}
+
+impl std::fmt::Debug for Area {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        todo!()
+    }
 }
 
 fn perlin_noise(size: UVec2, spread_x: Vec2, spread_y: Vec2) -> Vec<Vec<f64>> {
@@ -39,7 +45,8 @@ fn perlin_noise_simple(size: UVec2, spread: Vec2) -> Vec<Vec<f64>> {
 }
 
 fn gen_random_area() -> Area {
-    let noise = perlin_noise_simple(UVec2::splat(40), Vec2::new(-5.0, 5.0));
+    let size = UVec2::splat(40);
+    let noise = perlin_noise_simple(size, Vec2::new(-5.0, 5.0));
     let mut cells: Vec<Vec<AreaCell>> = vec![];
     for (i, row) in noise.iter().enumerate() {
         let mut temp: Vec<AreaCell> = vec![];
@@ -58,7 +65,7 @@ fn gen_random_area() -> Area {
         cells.push(temp);
     }
     Area {
-        size: Vec2::ZERO,
+        size,
         cells,
     }
 }
