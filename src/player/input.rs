@@ -66,7 +66,6 @@ pub fn change_target_system(
         });
         let mut target = p.single_mut();
         for (i, (enemy, trans)) in enemies.iter().enumerate() {
-            info!("i: {}, index: {:?}, enemy: {:?}", i, index.0, enemy);
             if i == index.0 {
                 target.entity = Some(*enemy);
                 target.pos = Some(Vec2::new(trans.translation.x, trans.translation.y));
@@ -92,8 +91,6 @@ pub fn update_target_system(
                     return;
                 }
             }
-            //target.entity = None;
-            //target.pos = None;
         }
     }
 }
@@ -108,7 +105,6 @@ pub fn click_target_system(
         let mut target = p.single_mut();
         for (enemy, pos) in e.iter() {
             if pos.0.x == mouse_pos.0.x && pos.0.y == mouse_pos.0.y {
-                info!("click target");
                 target.entity = Some(enemy);
                 target.pos = Some(Vec2::new(pos.0.x as f32, pos.0.y as f32));
                 break;
@@ -122,19 +118,15 @@ pub struct TargetBorder;
 
 pub fn setup_target_system(
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    // HACK: Some black magic going on in here
+    let sprite = Sprite {
+        color: Color::rgba(1.0, 1.0, 0.1, 0.3),
+        custom_size: Some(Vec2::splat(GRID_SIZE as f32 / 2.0)),
+        ..default()
+    };
     commands.spawn((
-        MaterialMesh2dBundle {
-            mesh: meshes
-                .add(Mesh::from(shape::Circle {
-                    radius: GRID_SIZE as f32 / 2.0,
-                    vertices: 4,
-                }))
-                .into(),
-            material: materials.add(ColorMaterial::from(Color::rgba(1.0, 1.0, 0.1, 0.3))),
+        SpriteBundle {
+            sprite,
             visibility: Visibility::Hidden,
             ..default()
         },
