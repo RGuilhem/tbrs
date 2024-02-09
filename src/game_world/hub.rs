@@ -13,6 +13,7 @@ use std::f32::consts::PI;
 #[derive(Component)]
 pub struct HubNode;
 
+// TODO: correct cell_types
 pub fn setup_hub(
     mut commands: Commands,
     atlas: Res<Sprites>,
