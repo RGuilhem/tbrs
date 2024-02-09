@@ -11,33 +11,17 @@ use std::f32::consts::PI;
 
 pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement, With<Player>>) {
     let mut dir = (0.0, 0.0);
-    if keys.pressed(KeyCode::W) {
+    if keys.pressed(KeyCode::W) || keys.pressed(KeyCode::E) || keys.pressed(KeyCode::Q) {
         dir.1 += 1.0;
     }
-    if keys.pressed(KeyCode::S) {
+    if keys.pressed(KeyCode::S) || keys.pressed(KeyCode::C) || keys.pressed(KeyCode::Z) {
         dir.1 += -1.0;
     }
-    if keys.pressed(KeyCode::D) {
+    if keys.pressed(KeyCode::D) || keys.pressed(KeyCode::E) || keys.pressed(KeyCode::C) {
         dir.0 += 1.0;
     }
-    if keys.pressed(KeyCode::A) {
+    if keys.pressed(KeyCode::A) || keys.pressed(KeyCode::Q) || keys.pressed(KeyCode::Z) {
         dir.0 += -1.0;
-    }
-    if keys.pressed(KeyCode::Q) {
-        dir.0 = -1.0;
-        dir.1 = 1.0;
-    }
-    if keys.pressed(KeyCode::E) {
-        dir.0 = 1.0;
-        dir.1 = 1.0;
-    }
-    if keys.pressed(KeyCode::C) {
-        dir.0 = 1.0;
-        dir.1 = -1.0;
-    }
-    if keys.pressed(KeyCode::Z) {
-        dir.0 = -1.0;
-        dir.1 = -1.0;
     }
     let mut mov = query.single_mut();
     mov.directions.x = dir.0;
