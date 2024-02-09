@@ -6,7 +6,6 @@ use crate::player::Player;
 use crate::WorldCoords;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
-use bevy::sprite::MaterialMesh2dBundle;
 use std::cmp::Ordering;
 use std::f32::consts::PI;
 
@@ -99,14 +98,14 @@ pub fn click_target_system(
     mouse: Res<Input<MouseButton>>,
     mouse_pos: Res<WorldCoords>,
     mut p: Query<&mut Target, With<Player>>,
-    e: Query<(Entity, &GridPos), (With<Enemy>, Without<Player>)>,
+    e: Query<(Entity, &GridPos, &Transform), (With<Enemy>, Without<Player>)>,
 ) {
     if mouse.just_pressed(MouseButton::Left) {
         let mut target = p.single_mut();
-        for (enemy, pos) in e.iter() {
+        for (enemy, pos, trans) in e.iter() {
             if pos.0.x == mouse_pos.0.x && pos.0.y == mouse_pos.0.y {
                 target.entity = Some(enemy);
-                target.pos = Some(Vec2::new(pos.0.x as f32, pos.0.y as f32));
+                target.pos = Some(Vec2::new(trans.translation.x, trans.translation.y));
                 break;
             }
         }
