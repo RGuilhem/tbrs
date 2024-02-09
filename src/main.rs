@@ -75,9 +75,7 @@ impl Plugin for TbrsPlugin {
 
 fn cursor_world_pos_system(
     mut mycoords: ResMut<WorldCoords>,
-    // query to get the window (so we can read the current cursor position)
     q_window: Query<&Window, With<PrimaryWindow>>,
-    // query to get camera transform
     q_camera: Query<(&Camera, &GlobalTransform), With<GameCamera>>,
 ) {
     let (camera, camera_transform) = q_camera.single();

@@ -7,6 +7,7 @@ use crate::WorldCoords;
 use crate::GRID_SIZE;
 use bevy::prelude::*;
 use bevy::sprite::MaterialMesh2dBundle;
+use std::cmp::Ordering;
 use std::f32::consts::PI;
 
 pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement, With<Player>>) {
@@ -44,16 +45,37 @@ pub fn player_movement(keys: Res<Input<KeyCode>>, mut query: Query<&mut Movement
     mov.directions.y = dir.1;
 }
 
+#[derive(Default, Debug)]
+pub struct TragetIndex(usize);
+
 pub fn change_target_system(
+    mut index: Local<TragetIndex>,
     keys: Res<Input<KeyCode>>,
     mut p: Query<&mut Target, With<Player>>,
     e: Query<(Entity, &Transform), (With<Enemy>, Without<Player>)>,
 ) {
     if keys.just_pressed(KeyCode::Tab) {
+        let targets_number = e.iter().size_hint().0;
+        let mut enemies: Vec<(Entity, &Transform)> = e.iter().collect();
+        enemies.sort_by(|a, b| {
+            if a.1.translation.x > b.1.translation.x || a.1.translation.x > b.1.translation.y {
+                Ordering::Greater
+            } else {
+                Ordering::Less
+            }
+        });
         let mut target = p.single_mut();
-        for (enemy, trans) in e.iter() {
-            target.entity = Some(enemy);
-            target.pos = Some(Vec2::new(trans.translation.x, trans.translation.y));
+        for (i, (enemy, trans)) in enemies.iter().enumerate() {
+            info!("i: {}, index: {:?}, enemy: {:?}", i, index.0, enemy);
+            if i == index.0 {
+                target.entity = Some(*enemy);
+                target.pos = Some(Vec2::new(trans.translation.x, trans.translation.y));
+            }
+        }
+        if targets_number != 0 {
+            index.0 = (index.0 + 1) % targets_number;
+        } else {
+            index.0 = 0;
         }
     }
 }
