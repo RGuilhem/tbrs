@@ -72,7 +72,10 @@ fn gen_random_area() -> Area {
             }
             temp.push(AreaCell {
                 cell_type: kind,
-                grid_pos: GridPos(IVec2::new(j as i32, i as i32)),
+                grid_pos: GridPos(IVec2::new(
+                    j as i32 - size.x as i32 / 2,
+                    i as i32 - size.y as i32 / 2,
+                )),
             });
         }
         cells.push(temp);
@@ -109,8 +112,8 @@ pub fn create_random_map(mut commands: Commands, atlas: Res<Sprites>) {
                     if collider {
                         parent.spawn((
                             MapCellBundle::new(
-                                col.grid_pos.0.x - area.size.x as i32 / 2,
-                                col.grid_pos.0.y - area.size.y as i32 / 2,
+                                col.grid_pos.0.x,
+                                col.grid_pos.0.y,
                                 s_index,
                                 &atlas,
                             ),
@@ -118,8 +121,8 @@ pub fn create_random_map(mut commands: Commands, atlas: Res<Sprites>) {
                         ));
                     } else {
                         parent.spawn(MapCellBundle::new(
-                            col.grid_pos.0.x - area.size.x as i32 / 2,
-                            col.grid_pos.0.y - area.size.y as i32 / 2,
+                            col.grid_pos.0.x,
+                            col.grid_pos.0.y,
                             s_index,
                             &atlas,
                         ));
