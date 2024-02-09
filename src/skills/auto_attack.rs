@@ -9,7 +9,7 @@ use bevy_rand::resource::GlobalEntropy;
 use rand_core::RngCore;
 use std::f32::consts::SQRT_2;
 
-#[derive(Component)]
+#[derive(Component, Copy, Clone)]
 pub enum AttackStyle {
     Melee,
     Range,

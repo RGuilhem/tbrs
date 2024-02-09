@@ -1,4 +1,5 @@
 use crate::alive::AliveBundle;
+use crate::skills::auto_attack::AttackStyle;
 use crate::sprites::sprite_index;
 use crate::sprites::transform_from_grid;
 use crate::Sprites;
@@ -8,38 +9,16 @@ pub struct EnemiesPlugin;
 
 impl Plugin for EnemiesPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_enemies);
+        app.add_systems(Startup, setup_enemies)
+            .add_systems(Update, enemies_spawn_system);
     }
 }
 
-fn setup_enemies(mut commands: Commands, atlas: Res<Sprites>) {
-    let mut sprite = TextureAtlasSprite::new(sprite_index(25, 2));
-    sprite.color = Color::DARK_GREEN;
-    let trans = transform_from_grid(2, 1, 1);
-    let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
-    alive_bundle.name.0 = "Goblin".to_string();
-    commands.spawn(EnemyBundle {
-        alive_bundle,
-        ..default()
-    });
-    let mut sprite = TextureAtlasSprite::new(sprite_index(25, 2));
-    sprite.color = Color::DARK_GREEN;
-    let trans = transform_from_grid(1, -1, 1);
-    let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
-    alive_bundle.name.0 = "Goblin".to_string();
-    commands.spawn(EnemyBundle {
-        alive_bundle,
-        ..default()
-    });
-    let mut sprite = TextureAtlasSprite::new(sprite_index(25, 2));
-    sprite.color = Color::DARK_GREEN;
-    let trans = transform_from_grid(1, 1, 1);
-    let mut alive_bundle = AliveBundle::with_sprite(sprite, &atlas, trans);
-    alive_bundle.name.0 = "Goblin".to_string();
-    commands.spawn(EnemyBundle {
-        alive_bundle,
-        ..default()
-    });
+fn setup_enemies(mut commands: Commands) {
+    commands.spawn(SpawnEnemy::goblin(1, 1));
+    commands.spawn(SpawnEnemy::goblin(-2, -3));
+    commands.spawn(SpawnEnemy::goblin(5, 1));
+    commands.spawn(SpawnEnemy::goblin(1, -1));
 }
 
 #[derive(Component)]
@@ -57,5 +36,44 @@ impl Default for EnemyBundle {
             alive_bundle: AliveBundle::default(),
             _enemy: Enemy,
         }
+    }
+}
+
+#[derive(Component)]
+pub struct SpawnEnemy {
+    pub name: String,
+    pub sprite: TextureAtlasSprite,
+    pub transform: Transform,
+    pub attack_style: AttackStyle,
+}
+
+impl SpawnEnemy {
+    fn goblin(x: i32, y: i32) -> Self {
+        let mut sprite = TextureAtlasSprite::new(sprite_index(25, 2));
+        sprite.color = Color::DARK_GREEN;
+        SpawnEnemy {
+            name: "Goblin".to_string(),
+            sprite,
+            transform: transform_from_grid(x, y, 1),
+            attack_style: AttackStyle::Melee,
+        }
+    }
+}
+
+fn enemies_spawn_system(
+    mut commands: Commands,
+    q: Query<(Entity, &SpawnEnemy)>,
+    atlas: Res<Sprites>,
+) {
+    for (id, spawn) in q.iter() {
+        let mut alive_bundle =
+            AliveBundle::with_sprite(spawn.sprite.clone(), &atlas, spawn.transform);
+        alive_bundle.name.0 = spawn.name.clone();
+        alive_bundle.auto_attack.auto_attack.style = spawn.attack_style;
+        commands.spawn(EnemyBundle {
+            alive_bundle,
+            ..default()
+        });
+        commands.entity(id).despawn();
     }
 }
