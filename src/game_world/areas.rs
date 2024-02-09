@@ -13,6 +13,7 @@ pub struct AreaCell {
     grid_pos: GridPos,
 }
 
+#[derive(Component)]
 pub struct Area {
     size: UVec2,
     cells: Vec<Vec<AreaCell>>,
@@ -111,12 +112,7 @@ pub fn create_random_map(mut commands: Commands, atlas: Res<Sprites>) {
                     };
                     if collider {
                         parent.spawn((
-                            MapCellBundle::new(
-                                col.grid_pos.0.x,
-                                col.grid_pos.0.y,
-                                s_index,
-                                &atlas,
-                            ),
+                            MapCellBundle::new(col.grid_pos.0.x, col.grid_pos.0.y, s_index, &atlas),
                             Collider,
                         ));
                     } else {
