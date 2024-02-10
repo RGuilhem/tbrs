@@ -1,20 +1,25 @@
+pub mod ai;
 pub mod spawner;
 
-use crate::movements::GridPos;
-use crate::enemies::spawner::Spawner;
 use crate::alive::AliveBundle;
+use crate::enemies::ai::ai_system;
+use crate::enemies::spawner::Spawner;
+use crate::movements::GridPos;
 use crate::skills::auto_attack::AttackStyle;
 use crate::sprites::sprite_index;
 use crate::sprites::transform_from_grid;
 use crate::Sprites;
 use bevy::prelude::*;
 
+use self::ai::Ai;
+
 pub struct EnemiesPlugin;
 
 impl Plugin for EnemiesPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup_enemies)
-            .add_systems(Update, enemies_spawn_system);
+            .add_systems(Update, enemies_spawn_system)
+            .add_systems(Update, ai_system);
     }
 }
 
@@ -30,6 +35,7 @@ pub struct Enemy;
 pub struct EnemyBundle {
     pub alive_bundle: AliveBundle,
     pub _enemy: Enemy,
+    pub _ai: Ai,
 }
 
 impl Default for EnemyBundle {
@@ -37,6 +43,7 @@ impl Default for EnemyBundle {
         EnemyBundle {
             alive_bundle: AliveBundle::default(),
             _enemy: Enemy,
+            _ai: Ai,
         }
     }
 }

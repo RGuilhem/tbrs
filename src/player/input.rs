@@ -1,4 +1,5 @@
 use crate::alive::Target;
+use crate::enemies::ai::ai_in_target_range;
 use crate::enemies::Enemy;
 use crate::movements::GridPos;
 use crate::movements::Movement;
@@ -34,12 +35,19 @@ pub struct TragetIndex(usize);
 pub fn change_target_system(
     mut index: Local<TragetIndex>,
     keys: Res<Input<KeyCode>>,
-    mut p: Query<&mut Target, With<Player>>,
+    mut p: Query<(&mut Target, &Transform), With<Player>>,
     e: Query<(Entity, &Transform), (With<Enemy>, Without<Player>)>,
 ) {
     if keys.just_pressed(KeyCode::Tab) {
+        let (mut target, trans) = p.single_mut();
         let targets_number = e.iter().size_hint().0;
         let mut enemies: Vec<(Entity, &Transform)> = e.iter().collect();
+        enemies.retain(|elem| {
+            let distance = elem.1.translation.distance(trans.translation) / GRID_SIZE as f32;
+            println!("distance: {:?}", distance);
+            ai_in_target_range((distance * distance) as i32)
+        });
+        info!("enemies: {:?}", enemies.len());
         enemies.sort_by(|a, b| {
             if a.1.translation.x > b.1.translation.x || a.1.translation.x > b.1.translation.y {
                 Ordering::Greater
@@ -47,7 +55,6 @@ pub fn change_target_system(
                 Ordering::Less
             }
         });
-        let mut target = p.single_mut();
         for (i, (enemy, trans)) in enemies.iter().enumerate() {
             if i == index.0 {
                 target.entity = Some(*enemy);
@@ -99,9 +106,7 @@ pub fn click_target_system(
 #[derive(Component)]
 pub struct TargetBorder;
 
-pub fn setup_target_system(
-    mut commands: Commands,
-) {
+pub fn setup_target_system(mut commands: Commands) {
     let sprite = Sprite {
         color: Color::rgba(1.0, 1.0, 0.1, 0.3),
         custom_size: Some(Vec2::splat(GRID_SIZE as f32 / 2.0)),
