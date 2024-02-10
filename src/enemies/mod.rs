@@ -1,3 +1,7 @@
+pub mod spawner;
+
+use crate::movements::GridPos;
+use crate::enemies::spawner::Spawner;
 use crate::alive::AliveBundle;
 use crate::skills::auto_attack::AttackStyle;
 use crate::sprites::sprite_index;
@@ -14,11 +18,9 @@ impl Plugin for EnemiesPlugin {
     }
 }
 
-fn setup_enemies(mut commands: Commands) {
-    commands.spawn(SpawnEnemy::goblin(1, 1));
-    commands.spawn(SpawnEnemy::goblin(-2, -3));
-    commands.spawn(SpawnEnemy::goblin(5, 1));
-    commands.spawn(SpawnEnemy::goblin(1, -1));
+fn setup_enemies(commands: Commands) {
+    let spawner = Spawner::new(GridPos(IVec2::splat(5)));
+    spawner.spawn_all_of(commands, SpawnEnemy::goblin);
 }
 
 #[derive(Component)]

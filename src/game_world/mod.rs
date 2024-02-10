@@ -4,8 +4,6 @@ use crate::sprites::transform_from_grid;
 use crate::Sprites;
 use bevy::prelude::*;
 
-use self::hub::setup_hub;
-
 pub mod areas;
 pub mod hub;
 

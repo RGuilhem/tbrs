@@ -4,7 +4,6 @@ use crate::sprites::{sprite_index, Sprites};
 use bevy::prelude::*;
 use noise::utils::{NoiseMapBuilder, PlaneMapBuilder};
 use noise::Perlin;
-use rand::prelude::*;
 
 use super::GridCellType;
 
