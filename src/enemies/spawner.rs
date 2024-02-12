@@ -34,7 +34,7 @@ impl Spawner {
         let mut rng = rand::thread_rng();
         for _ in 0..self.amount {
             let x = rng.gen_range(self.grid_pos.0.x - self.spread..self.grid_pos.0.x + self.spread);
-            let y = rng.gen_range(self.grid_pos.0.y - 10..self.grid_pos.0.y + 10);
+            let y = rng.gen_range(self.grid_pos.0.y - self.spread..self.grid_pos.0.y + self.spread);
             commands.spawn(creator(x, y));
         }
     }
